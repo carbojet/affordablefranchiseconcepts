@@ -47,7 +47,7 @@ input[type=checkbox] {
   <!-- approval -->
   <?php
 
-			$sidemenu[5] =array("1"=>"active","2"=>array("1"=>"active"));
+            $sidemenu[9] =array("1"=>"active","2"=>array("1"=>"active"));
 
 			$data["sidemenu"] =  $sidemenu;
 
@@ -62,7 +62,7 @@ input[type=checkbox] {
       <div class="row-fluid">
         <div class="span12">
           <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-          <h3 class="page-title">Listings</h3>
+          <h3 class="page-title">Page</h3>
           <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
       </div>
@@ -72,277 +72,27 @@ input[type=checkbox] {
         <div class="span12">
           <div class="portlet box grey" style="border-color:#800000;">
             <div class="portlet-title" style="background-color:#800000;">
-              <div class="caption"> <i class="icon-edit"></i> Create New Listing</div>
+              <div class="caption"> <i class="icon-edit"></i> Create New Page</div>
             </div>
             <div class="portlet-body form">
               <!-- BEGIN FORM-->
-              <form name="form" id="form" action="<?php echo base_url('listing/new_listing/');?>" class="form-horizontal" method="post" enctype="multipart/form-data" novalidate="novalidate">
+              <form name="form" id="form" action="<?php echo base_url('pages/new_page/');?>" class="form-horizontal" method="post" enctype="multipart/form-data" novalidate="novalidate">
               
                 <div class="alert alert-error <?php if(!isset($validation_errors)){echo "hide";} ?>" style="margin:10px 0 10px 0">
-                  <button class="close" data-dismiss="alert" style="margin-top:7px;"></button>
-                  <font style="font-weight:bold">
-                  <h3><i class="icon-warning-sign pull-left" style="padding-right:5px;"></i></h3>
-                  <div style="min-height:31px; vertical-align:middle;"> Please fill the following form completely. <br>
+                    <button class="close" data-dismiss="alert" style="margin-top:7px;"></button>
+                    <h3><i class="icon-warning-sign pull-left" style="padding-right:5px;"></i></h3>
+                    <div style="min-height:31px; vertical-align:middle;"> Please fill the following form completely. <br>
                     Fields marked  * are required ... </div>
-                  </font> </div>
-                  
-                  
+                </div>
                   
                 
                 <div class="space20"></div>
-                <div class="space20"></div>
-                <!--<div class="control-group">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <h5 style="font-weight:700">Member Information</h5>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Member Name</label>
-                  <div class="controls"> <span class="text bold" style="color:#900"><?php echo $listingObj->seller_firstname." ".$listingObj->seller_lastname ?></span> </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">Curent Package</label>
-                  <div class="controls">
-                    <?php $packageObj = $this->Listingdb->get_seller_package(array("seller_package"=>$listingObj->seller_package)); ?>
-                    <span class="text bold" style="color:#900">
-                    <?php if(!empty($packageObj->package_subscription_name_1)){ echo $packageObj->package_subscription_name_1;}else{echo "None";} ?>
-                    </span>
-                    <input type="hidden" name="listing_seller" value="<?php echo $listingObj->listing_seller; ?>">
-                    <input type="hidden" name="listing_package" value="<?php echo $listingObj->seller_package; ?>">
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Expire Date</label>
-                  <div class="controls">
-                    <input type="text" name="listing_expire" value="<?php echo date("Y-m-d",strtotime($listingObj->seller_expire_date)); ?>" data-required="1" class="span6 m-wrap" style="">
-                    <br>
-                    <div class="span6" style="margin-left:0"> Because this is a subscription, you can only change the listing expire date by editing the seller expiration date ... </div>
-                  </div>
-                </div>-->
-                <div class="control-group form_field">
-                  <label class="control-label">Seller Id</label>
-                  <div class="controls">
-                    <input type="text" name="listing_seller" value="" data-required="1" class="span6 m-wrap" style="">
-                  </div>
-                </div>
-                <!--- FORM SECTION - START : BUSINESS NAME -->
-                <div class="control-group form_field sec_cat">
-                	<div class="add_div">
-                	<div class="span5">
-                  <label class="control-label">Sector <span class="required">*</span></label>
-                  <div class="controls">
-                    <div id="listing_sector_1" style="current:block; padding-top:0px">
-                      <!-- onChange="jQuery.fn.ajax_sector_list(this.value,3);" -->
-                      <select name="listing_sector[]" id="listing_sector" class="span12 m-wrap listing_sector" onChange="jQuery.fn.ajax_category_list(this.value,1);">
-                        <option value="">Select Sector</option>                        
-                    	<?php
-						$sector_list = $this->Listingdb->sector_list();
-						if(!empty($sector_list)){
-						foreach($sector_list as $k=>$sectorlistObj){ ?>
-                    	<option value="<?php echo $sectorlistObj->category_id; ?>"><?php echo $sectorlistObj->category_name_1; ?></option>
-                        <?php }} ?>
-                      </select>
-                    </div>
-                  </div></div>
-                  	<div class="span5">                  
-                  <label class="control-label">Category <span class="required">*</span></label>
-                  <div class="controls">
-                    <div id="listing_category_1" class="listing_category" style="current:block; padding-top:0px">
-                      <select name="listing_category[]" id="box_listing_category_1" class="span12 m-wrap" >
-                        <option value=""></option>
-                       
-                      </select>
-                    </div>                    
-                  </div>                  
-                </div></div>
-                <div class="span2 adbtn"><button type="button" name="addbutton" class="btn btn-default addButton"><i class="icon-plus"></i></button></div>
-                </div>
-                <input type="hidden" name="listing_category_count" value="1" />
+                <div class="space20"></div> 
                 
-                <div class="control-group form_field">
-                  <label class="control-label"> Enter Your Business Name <span class="required">*</span> </label>
-                  <div class="controls">
-                    <input type="text" name="listing_title_1" value="<?php echo $listingObj->listing_title_1; ?>" data-required="1" class="span6 m-wrap" style="">
-                  </div>
-                </div>
-                <!--- FORM SECTION - END : BUSINESS NAME -->
-                <div class="control-group" style="margin-top:50px">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <h5 style="font-weight:700">Enter Your Listing Price</h5>
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Pricing $ <span class="required">*</span></label>
-                  <div class="controls">
-                    <div style="current:block; padding-top:0px">
-                      <input type="text" name="listing_price" value="<?php echo $listingObj->listing_price; ?>" data-required="1" class="span6 m-wrap" style="">
-                    </div>
-                  </div>
-                </div>
-                <!--- FORM SECTION - START : BUSINESS PLACE -->
-                <div class="control-group" style="margin-top:50px">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <h5 style="font-weight:700">Enter Your Business Location</h5>
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Location <span class="required">*</span></label>
-                  <div class="controls">
-                    <div id="listing_location_1" style="current:block; padding-top:0px">
-                      <select name="listing_location_1" id="box_listing_location_1" class="span6 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,2);">
-                        <option value="">Choose your business location</option>
-                        <?php
-
-													$country_list = $this->Listingdb->get_active_country();
-
-													foreach($country_list as $k=>$ClocationObj)
-
-													{?>
-                        <?php if(preg_match("/".$ClocationObj->location_path."/",$listingObj->listing_location_path)){ $select_country = $ClocationObj->location_id;?>
-                        <option value="<?php echo $ClocationObj->location_id; ?>" selected="selected"><?php echo $ClocationObj->location_name; ?></option>
-                        <?php }else{?>
-                        <option value="<?php echo $ClocationObj->location_id; ?>"><?php echo $ClocationObj->location_name; ?></option>
-                        <?php }?>
-                        <?php	}
-
-												?>
-                      </select>
-                    </div>
-                    <div id="listing_location_2" style="current:none; padding-top:5px">
-                      <select name="listing_location_2" class="span6 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,3);">
-                        <?php
-
-													$state_list = $this->Listingdb->get_location_list(array("location_parent"=>$select_country));
-
-													foreach($state_list as $k=>$stateObj){
-
-													if(preg_match("/".$stateObj->location_id."/",$listingObj->listing_location_path)){
-
-													$select_state = $stateObj->location_id;?>
-                        <option value="<?php echo $stateObj->location_id; ?>" selected="selected"><?php echo $stateObj->location_name ?></option>
-                        <?php }else{?>
-                        <option value="<?php echo $stateObj->location_id; ?>"><?php echo $stateObj->location_name ?></option>
-                        <?php }?>
-                        <?php }?>
-                      </select>
-                    </div>
-                    <div id="listing_location_3" style="current:none; padding-top:5px">
-                      <select name="listing_location_3" class="span6 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,4);">
-                        <?php
-
-													$state_div_list = $this->Listingdb->get_location_list(array("location_parent"=>$select_state));
-
-													foreach($state_div_list as $k=>$divObj){
-
-													if(preg_match("/".$divObj->location_id."/",$listingObj->listing_location_path)){
-
-													$select_div = $divObj->location_id;?>
-                        <option value="<?php echo $divObj->location_id; ?>" selected="selected"><?php echo $stateObj->location_name ?></option>
-                        <?php }else{?>
-                        <option value="<?php echo $divObj->location_id; ?>"><?php echo $divObj->location_name ?></option>
-                        <?php }?>
-                        <?php }?>
-                      </select>
-                    </div>
-                    <div id="listing_location_4" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_5" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_6" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_7" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_8" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_9" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_10" style="current:none; padding-top:0px"></div>
-                    <div id="listing_location_notification" style="display:none; padding-top:5px"> <img src="<?php echo base_url("theme");?>/img/ajax-loader.gif" align="left" style="padding-right:5px"> <font>please wait while loading sub locations data ...</font> </div>
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Address </label>
-                  <div class="controls">
-                    <input type="text" name="listing_address" value="<?php echo $listingObj->listing_address; ?>" data-required="1" class="span6 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <input type="text" name="listing_address2" value="<?php echo $listingObj->listing_address2; ?>" data-required="1" class="span6 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Zip Code </label>
-                  <div class="controls">
-                    <input type="text" name="listing_zip" value="<?php echo $listingObj->listing_zip; ?>" data-required="1" class="span4 m-wrap" style="">
-                  </div>
-                </div>
-                <!--- FORM SECTION - END : BUSINESS PLACE -->
-                <!--- FORM SECTION - START : SPECIFIC GEO LOCATION -->
-                <div class="control-group">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <div class="span8"> If you want to use your own longitude and latitude coordinates, then you must enter both longitude and latitude coordinates into the field below.
-                      
-                      However if you don't put the coordinates, then the system will use the default system generated values. </div>
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Latitude</label>
-                  <div class="controls">
-                    <input type="text" name="listing_posted_latitude" value="<?php echo $listingObj->listing_posted_latitude; ?>" data-required="1" class="span4 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group form_field">
-                  <label class="control-label">Longitude</label>
-                  <div class="controls">
-                    <input type="text" name="listing_posted_longitude" value="<?php echo $listingObj->listing_posted_longitude; ?>" data-required="1" class="span4 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="space20"></div>
-                <div class="space20"></div>
-                <div class="control-group">
-                  <label class="control-label"> Facilities <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_facilities" class="span8 m-wrap" rows="6"><?php echo $listingObj->listing_facilities; ?></textarea>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"> Competition <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_competition" class="span8 m-wrap" rows="6"><?php echo $listingObj->listing_competition; ?></textarea>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"> Growth <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_growth" class="span8 m-wrap" rows="6"><?php echo $listingObj->listing_growth; ?></textarea>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"> Financing <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_financing" class="span8 m-wrap" rows="6"><?php echo $listingObj->listing_financing; ?></textarea>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"> Training <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_training" class="span8 m-wrap" rows="6"><?php echo $listingObj->listing_training; ?></textarea>
-                  </div>
-                </div>
-                <div class="space20"></div>
-                <div class="space20"></div>
-                <div class="control-group">
-                  <label class="control-label"> Business Status <span class="required">*</span> </label>
-                  <div class="controls">
-                    <textarea name="listing_sell_reason" class="span8 m-wrap" rows="6"></textarea>
-                  </div>
-                </div>
-                
-                <div class="space20"></div>
                 <div class="control-group">
                   <label class="control-label"> Title </label>
                   <div class="controls">
-                    <input type="text" name="listing_title" value="" class="span12 m-wrap" />
+                    <input type="text" name="post_title" value="" class="span12 m-wrap" />
                   </div>
                 </div>
                 <div class="space20"></div>
@@ -352,8 +102,8 @@ input[type=checkbox] {
                 <div class="control-group">
                   <label class="control-label"> Full or Complete Description </label>
                   <div class="controls">
-                    <textarea name="listing_descfull_1" class="span8 ckeditor m-wrap" rows="6" style="visibility: hidden; display: none;"><?php echo $listingObj->listing_descfull_1; ?></textarea>
-                    <div id="cke_listing_descfull_1" class="cke_1 cke cke_reset cke_chrome cke_editor_listing_descfull_1 cke_ltr cke_browser_webkit" dir="ltr" lang="en" role="application" aria-labelledby="cke_listing_descfull_1_arialbl"></div>
+                    <textarea name="post_content" class="span8 ckeditor m-wrap" rows="6" style="visibility: hidden; display: none;"></textarea>
+                    <div id="cke_post_content" class="cke_1 cke cke_reset cke_chrome cke_editor_listing_descfull_1 cke_ltr cke_browser_webkit" dir="ltr" lang="en" role="application" aria-labelledby="cke_listing_descfull_1_arialbl"></div>
                   </div>
                 </div>
                 <div class="space20"></div>

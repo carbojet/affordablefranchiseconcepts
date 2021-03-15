@@ -19,54 +19,30 @@ margin-left:170px !important;
 }
 </style>
 <script type="text/javascript">
-
 	<!--
-
 		function confirm_delete(id, name, page){	
-
 			if ( confirm("Do you want to delete this data?\n( Current Data : " + name + " )") ){
-
 				window.location = "<?php echo base_url("/listing/delete_listing/");?>"+"/"+id+"/"+page; 
-
 				return true;
-
 			} 
-
 			else{ return false; }
-
 		}		
-
 		function confirm_delete_all(){	
 			
-
 			if ( confirm("Do you want to delete all data?") ){
-
 				window.location = "<?php echo base_url("listing/delete_all_listing/"); ?>"; 
-
 				return true;
-
 			} 
-
 			else{ return false; }
-
-		}
-
-		
+		}		
 
 		function menu_resort(menuform) {
-
 			var baseurl		= "?" ;
-
 			selecteditem	= menuform.s_order.selectedIndex ;
-
 			newurl 			= menuform.s_order.options[ selecteditem ].value ;
-
 			location.href	= baseurl + '&s_order=' + newurl;
-
 		}
-
 	-->
-
 	</script>
 </head><!-- BEGIN BODY -->
 <body class="fixed-top">
@@ -93,7 +69,7 @@ margin-left:170px !important;
   <!-- approval -->
   <?php
 
-			$sidemenu[5] =array("1"=>"active","2"=>array("1"=>"active"));
+			$sidemenu[9] =array("1"=>"active","2"=>array("1"=>"active"));
 
 			$data["sidemenu"] =  $sidemenu; 
 
@@ -108,170 +84,13 @@ margin-left:170px !important;
       <div class="row-fluid">
         <div class="span12">
           <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-          <h3 class="page-title">Listings</h3>
+          <h3 class="page-title">Pages</h3>
           <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
       </div>
       <!-- END PAGE HEADER-->
       <!-- BEGIN PAGE CONTENT-->
-      <div class="row-fluid inbox">
-        <div class="span12">
-          <div class="portlet box grey" style="border-color:#004080;">
-            <div class="portlet-title" style="background-color:#004080;">
-              <div class="caption"><i class="icon-search"></i> Search Listings</div>
-              <div class="actions">
-                <button class="btn blue dropdown-toggle toggle-slider" data-toggle="portlet-body"><i class="icon-angle-down rotate"></i></button>
-              </div>
-            </div>
-            <div id="portlet-body" class="portlet-body form" style="display:none;">
-              <!-- BEGIN FORM-->
-              <form name="form" id="form" action="<?php echo base_url("listing/listing_search/");?>" class="form-horizontal" method="post">
-                <div class="space20"></div>
-                <div class="space20"></div>
-                <div class="control-group">
-                  <label class="control-label"></label>
-                  <div class="controls"> You can simply use the following search form to search the listings you want. <br>
-                    Please understand that the more criteria you put in the form will give you narrower results ... </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"></label>
-                  <div class="controls">
-                    <h5 style="font-weight:700">Enter Listing Criteria ...</h5>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">ID Number</label>
-                  <div class="controls span6">
-                    <input type="text" name="listing_id" data-required="1" class="span12 m-wrap">
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">Seller Id</label>
-                  <div class="controls span6">
-                    <input type="text" name="listing_seller_id" data-required="1" class="span12 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">Sector Name</label>
-                  <div class="controls span6">
-                    <select name="listing_sector" class="span12 m-wrap" onChange="jQuery.fn.ajax_category_list(this.value,1);">
-                      <option value="">Select Sector</option>
-                      <?php						
-						$sector_list = $this->Listingdb->sector_list();						
-						if(!empty($sector_list)){
-						foreach($sector_list as $k=>$sectorlistObj){ ?>
-                      <option value="<?php echo $sectorlistObj->category_id; ?>"><?php echo $sectorlistObj->category_name_1; ?></option>
-                      <?php }} ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">Category</label>
-                  <div class="controls span6">
-                    <div id="listing_category_1" class="listing_category" style="current:block; padding-top:0px">
-                      <select name="listing_category" id="box_listing_category_1" class="span12 m-wrap" >
-                        <option value="0"></option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="control-group span12">
-                  <label class="control-label">Location</label>
-                  <div class="controls span8 location">
-                    <div id="listing_location_1" style="current:block; padding-top:0px" class="span4">
-                      <select name="listing_location_country" id="box_listing_location_1" class="span12 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,2);">
-                        <option value="">Choose your business location</option>
-                        <?php
-
-													$country_list = $this->Listingdb->get_active_country();
-
-													foreach($country_list as $k=>$ClocationObj)
-
-													{?>
-
-                        <option value="<?php echo $ClocationObj->location_id; ?>"><?php echo $ClocationObj->location_name; ?></option>
-
-                        <?php	}
-
-												?>
-                      </select>
-                    </div>
-                    <div id="listing_location_2" style="current:none; padding-top:0px" class="span4">
-                      <select name="listing_location_state" class="span12 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,3);">
-                        <option value="">State</option>
-                      </select>
-                    </div>
-                    <div id="listing_location_3" style="current:none; padding-top:0px" class="span4">
-                      <select multiple name="listing_location_city[]" class="span12 m-wrap" onChange="jQuery.fn.ajax_location_list(this.value,4);">
-                        <option value="">City</option>
-                      </select>
-                    </div>
-                    <div id="listing_location_notification" style="display:none; padding-top:5px"> <img src="gui/ltr/img/ajax-loader.gif" align="left" style="padding-right:5px"> <font>please wait while loading sub locations data ...</font> </div>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">Zip Code</label>
-                  <div class="controls span6">
-                    <input type="text" name="listing_zip" data-required="1" class="span12 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label">Keyword</label>
-                  <div class="controls span6">
-                    <input type="text" name="listing_status_keywords" data-required="1" class="span12 m-wrap" style="">
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label"> Featured </label>
-                  <div class="controls span6">
-                    <select name="s_featured" class="span12 m-wrap">
-                      <option value="">Any </option>
-                      <option value="featured">Featured Listings </option>
-                      <option value="unfeatured">Not-Featured Listings </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label"> New </label>
-                  <div class="controls span6">
-                    <select name="listing_status_new" class="span12 m-wrap">
-                      <option value="">Any </option>
-                      <option value="renew">New </option>
-                      <option value="new">Old </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label"> Visit Status </label>
-                  <div class="controls span6">
-                    <select name="visit_status" class="span12 m-wrap">
-                      <option value="any">Any </option>
-                      <option value="visited">Visited</option>
-                      <option value="not_visited">Not-visited</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="control-group span5">
-                  <label class="control-label"> Order By </label>
-                  <div class="controls span6">
-                    <select name="s_order" class="span12 m-wrap">
-                    	<option value="listing_id desc">Ads DESC</option>
-                      <option value="listing_id asc">Ads ASC</option>                      
-                      <option value="listing_visited asc">Visited ASC</option>
-                      <option value="listing_visited desc">Visited DESC</option>
-                    </select>
-                  </div>
-                </div>
-                <div style="clear:both"></div>
-                <div class="form-actions">
-                  <button type="submit" name="" class="btn black" style="background-color:#461B7E;"> <i class="icon-search"></i> Search </button>
-                </div>
-              </form>
-              <!-- END FORM-->
-            </div>
-          </div>
-        </div>
-      </div>
+      
       <div class="row-fluid profile">
         <div class="span12">
           <div>
@@ -289,10 +108,9 @@ margin-left:170px !important;
             <div style="float:right">
               <div class="hidden-480" style="float:right">
 
-<?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
-if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
-
-                <div dir="ltr"> <a href="<?php echo base_url("listing/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("listing/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
+                <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
+                if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
+                <div dir="ltr"> <a href="<?php echo base_url("pages/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
               </div>
             </div>
             <div style="clear:both"></div>
@@ -303,17 +121,14 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
               <!-- BEGIN PORTLET-->
               <div class="portlet">
                 <div class="portlet-title">
-                  <div class="caption"><i class="icon-list"></i> Manage Listings</div>
+                  <div class="caption"><i class="icon-list"></i> Manage Pages</div>
                   <div class="actions">
                     <div class="btn-group">
                       <button class="btn red dropdown-toggle" data-toggle="dropdown">Add New <i class="icon-angle-down"></i></button>
                       <ul class="dropdown-menu pull-right">
-                        <li><a href="<?php echo base_url("listing/new_listing/"); ?>"><i class="icon-plus"></i> Add New </a></li>
+                        <li><a href="<?php echo base_url("pages/new_page/"); ?>"><i class="icon-plus"></i> Add New </a></li>
                         <li><a href="#" onClick="confirm_delete_all();"><i class="icon-trash"></i> Delete All </a></li>
                         <li><a href="#" class="delete_selected"><i class="icon-trash"></i>Delete Selected</a></li>
-                        <li><a href="#" class="search-btn"><i class="icon-search"></i> Search </a></li>
-                        <!--<li><a onClick="confirm_delete_all('Manage Listings')" style="cursor:pointer"><i class="icon-trash"></i> Delete All </a></li>
-                        <li><a onClick="confirm_delete_selected('Manage Listings')" style="cursor:pointer"><i class="icon-remove"></i> Delete Selected </a></li>-->
                       </ul>
                     </div>
                   </div>
@@ -322,7 +137,7 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
                   <?php
 					if(isset($success_msg)){?>
                   <div class="alert alert-success " style="margin:10px 0 10px 0">
-                    <button class="close" data-dismiss="alert" style="margin-top:7px;"></button>
+                    <button class="close" data-dismiss="alert" style="margin-top:7px;"><span></span></button>
                     <font style="font-weight:bold">
                     <h3><i class="icon-ok pull-left" style="padding-right:5px;"></i></h3>
                     <div style="min-height:31px; vertical-align:middle;"> <?php echo $success_msg; ?> </div>
@@ -335,108 +150,57 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
                           <th style="width:8px;"><div class="checker" id="uniform-undefined"><span class="">
                               <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" style="opacity: 0;">
                               </span></div></th>
-                          <th class="span9">Detailed Info</th>
-                          <th class="span3" style="text-align:right">Thumbnail</th>
+                          <th class="span10">Title</th>
+                          <th class="span2">Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php if(!empty($listing_list)){ foreach($listing_list as $k=>$listingObj){ ?>
+                        <?php if(!empty($pages)){
+                          foreach($pages as $k=>$page){                            
+                            ?>
                         <tr>
-                          <td style="padding-top:8px"><div class="checker" id="uniform-undefined"><span class="">
-                              <input name="listing_status_delete[]" type="checkbox" class="checkboxes" value="<?php echo $listingObj->listing_id; ?>" style="opacity: 0;">
-                              </span></div></td>
-                          <td style="padding-right:20px; vertical-align:middle"><div style="padding:5px 0 5px 0">
-                              <?php $visitor_commentObj  = $this->Listingdb->get_listing_rating(array("listing_id"=>$listingObj->listing_id)); 
-
-													if(!empty($visitor_commentObj->comment_rating)){?>
-                              <img width="84" height="16" src="<?php echo base_url('theme');?>/img/stars/pic_star<?php echo $visitor_commentObj->comment_rating; ?>.png" alt="" style="width:84px; height:16px;">
-                              <?php }?>
+                          <td style="padding-top:8px">
+                            <div class="checker" id="uniform-undefined">
+                              <span class="">
+                                <input name="page_status_delete[]" type="checkbox" class="checkboxes" value="<?php echo $page->ID; ?>" style="opacity: 0;">
+                              </span>
                             </div>
-                            <h5 style="font-weight:700; margin:0;"><?php echo $listingObj->listing_title_1; ?></h5>
-                            <?php 
-								echo $this->Listingdb->listing_location_path($listingObj->listing_location_path);
-								
-							?>
-                            <!-- details -->
-                            <div class="hidden-768" style="margin-left:0px; margin-bottom:5px; margin-top:10px">
-                              <div class="span6">
-                                <div class="td_label">ID Number</div>
-                                <div class="td_value"><?php echo $listingObj->listing_id;?></div>
-                                <div class="td_clear"></div>
-                                <div class="td_label">Seller Id</div>
-                                <div class="td_value"><?php echo $listingObj->seller_username;?></div>
-                                <div class="td_clear"></div>
-                                <?php $viewed = $this->Listingdb->get_listing_visited(array("stat_listing"=>$listingObj->listing_id));?>
-                                <div class="td_label">Viewed</div>
-                                <div class="td_value"> <?php echo $viewed; ?> times</div>
-                                <div class="td_clear"></div>
-                                <?php //$favourited_detail = $this->Listingdb->get_listing_favourited(array("favourite_listing"=>$listingObj->listing_id)); ?>
-                                <?php /*?><div class="td_label">Favourited</div>
-                                <div class="td_value"> <?php echo count($favourited_detail); ?> times</div><?php */?>
-                                <div class="td_clear"></div>
-                              </div>
-                              <div class="span6">
-                                <?php $packageObj = $this->Listingdb->get_listing_package(array("listing_package"=>$listingObj->listing_package)); ?>
-                                <!--<div class="td_label">Package</div>
-                                <div class="td_value">
-                                  <?php if(!empty($packageObj->package_listing_name_1)){echo $packageObj->package_listing_name_1;} ?>
-                                </div>-->
-                                <?php /*?><div class="td_clear"></div>
-                                <div class="td_label">Expired</div>
-                                <div class="td_value"><?php echo date("d-M-Y",strtotime($listingObj->listing_expire)); ?></div><?php */?>
-                                <div class="td_clear"></div>
-                                <div class="td_label">Featured</div>
-                                <div class="td_value">
-                                  <?php if($listingObj->listing_status_feature=="featured"){ echo "Yes";}else{echo "No";} ?>
-                                </div>
-                                <div class="td_clear"></div>
-                                <div class="td_label">New</div>
-                                <div class="td_value">
-                                  <?php if($listingObj->listing_status_new=="new"){ echo "No";}else{echo "Yes";} ?>
-                                </div>
-                                <div class="td_clear"></div>
-                                <?php $visitor_comment_array = $this->Listingdb->get_listing_mailed(array("comment_linkid"=>$listingObj->listing_id));?>
-                                <div class="td_label">Visited</div>
-                                <div class="td_value"><?php echo count($visitor_comment_array); ?></div>
-                                <div class="td_clear"></div>
-                              </div>
-                              <div class="clearfix"></div>
-                            </div>
+                          </td>
+                          <td style="text-align:left; vertical-align:baseline; padding:10px;">
+                            <h5 style="font-weight:700; margin:0;"><?php echo $page->post_title; ?></h5>
                             <!-- property links -->
                             <div class="btn-group"> <a class="btn mini purple dropdown-toggle" data-toggle="dropdown" href="#">Edit <i class="icon-angle-down"></i></a>
                               <ul class="dropdown-menu">
-                                <li><a href="<?php echo base_url("listing/edit/".$listingObj->listing_id."/".$pagination["currentpage"]);?>"><i class="icon-edit"></i> Edit </a></li>
-                                <li><a onClick="confirm_delete('<?php echo $listingObj->listing_id;?>','# <?php echo $listingObj->listing_id;?>','<?php echo $pagination["startpage"];?>')" style="cursor:pointer"><i class="icon-trash"></i> Delete </a></li>
-                                <li><a href="<?php echo base_url("listing/listing_statistics/".$listingObj->listing_id); ?>"><i class="icon-bar-chart"></i> Statistics </a></li>
-                                <?php /*?><li><a href="<?php echo base_url("listing/listing_reviews/".$listingObj->listing_id); ?>"><i class="icon-comments"></i> Reviews <font dir="ltr">(<?php echo $this->Listingdb->get_review_list(true,$listingObj->listing_id) ; ?>)</font></a></li><?php */?>
-                                <li><a href="<?php echo base_url("../product/?listing_id=".$listingObj->listing_id); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
-                                <li>
-                                  <?php if($listingObj->listing_status_feature=="featured"){ ?>
-                                  <a href="<?php echo base_url("listing/feature/off/".$listingObj->listing_id."/".$pagination["currentpage"]); ?>"><i class="icon-star-empty"></i> Un-Feature </a>
-                                  <?php }else{ ?>
-                                  <a href="<?php echo base_url("listing/feature/on/".$listingObj->listing_id."/".$pagination["currentpage"]); ?>"><i class="icon-star"></i> Feature </a>
-                                  <?php } ?>
-                                </li>
-                                <li>
-                                  <?php if($listingObj->listing_status_new=="new"){ ?>
-                                  <a href="<?php echo base_url("listing/status_new/on/".$listingObj->listing_id."/".$pagination["currentpage"]); ?>"><i class="icon-star"></i> New</a>
-                                  <?php }else{ ?>
-                                  <a href="<?php echo base_url("listing/status_new/off/".$listingObj->listing_id."/".$pagination["currentpage"]); ?>"><i class="icon-star-empty"></i> Old </a>
-                                  <?php } ?>
-                                </li>
+                                <li><a href="<?php echo base_url("pages/edit/".$page->ID."/".$pagination["currentpage"]);?>"><i class="icon-edit"></i> Edit </a></li>
+                                <li><a onClick="confirm_delete('<?php echo $page->ID;?>','# <?php echo $page->ID;?>','<?php echo $pagination["startpage"];?>')" style="cursor:pointer"><i class="icon-trash"></i> Delete </a></li>
+                                <li><a href="<?php echo base_url("pages/listing_statistics/".$page->ID); ?>"><i class="icon-bar-chart"></i> Statistics </a></li>
+                                <li><a href="<?php echo base_url("../?listing_id=".$page->ID); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
                               </ul>
-                            </div></td>
-                          <td style="text-align:right; vertical-align:middle; padding:10px;"><?php
-
-													$listing_photoObj = $this->Listingdb->get_listing_main_photo(array("listing_id"=>$listingObj->listing_id,"photo_status_main"=>"main"));													
-													if(!empty($listing_photoObj->photo_id)){
-
-												?>
-                            <img src="<?php echo base_url();?>photo_medium/<?php echo $listing_photoObj->photo_id;?>.jpg" border="0" style="border:1px solid #cccccc; padding:2px">
-                            <?php }?>
+                            </div>
                           </td>
+                          <td style="padding-right:20px; vertical-align:middle;">                          
+                              <!-- details -->
+                              <div class="hidden-768" style="margin-left:0px; margin-bottom:5px; margin-top:10px">
+                                <div class="span12">
+                                  <div class="td_label">Status</div>
+                                  <div class="td_value"><?php echo $page->post_status; ?></div>
+                                  <div class="td_clear"></div>
+                                  <div class="td_label">Viewed</div>
+                                  <div class="td_value">times</div>
+                                  <div class="td_clear"></div>
+                                  <div class="td_label">Date</div>
+                                  <div class="td_value"><?php echo date('d M y',strtotime($page->post_modified));?></div>
+                                  <div class="td_clear"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div> 
+                          </td>                          
                         </tr>
-                        <?php }}else{ echo "Record Not Found!";}?>
+                        <?php
+                        
+                       }
+                        
+                      }else{ echo "Record Not Found!";}?>
                       </tbody>
                     </table>
                   </form>
@@ -466,7 +230,7 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
 <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
 if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
 
-                <div dir="ltr"> <a href="<?php echo base_url("listing/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("listing/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
+                <div dir="ltr"> <a href="<?php echo base_url("pages/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
               </div>
             </div>
             <div style="clear:both"></div>

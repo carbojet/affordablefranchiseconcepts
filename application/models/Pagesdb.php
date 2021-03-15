@@ -68,56 +68,30 @@ return "$city, $state, $country";
 }
 
 
-	public function listing_list($startpage,$limit)
-	{
-		try
-		{
-			if($this->db->get("listing")->num_rows()>0)
-			{
-				$rec = ceil($this->db->get("listing")->num_rows()/$limit);				
-
-				$lTo = $limit;				
-
-				//if($startpage<1){$startpage=1;}
-
-				if($startpage>$rec){$startpage = $rec;}
-
-				if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-
-				else{$lFrom = 0;}				
-
-				$query = $this->db->select("*")->from("listing")->join('seller', 'seller.seller_id = listing.listing_seller')->join("setup_location","setup_location.location_id = seller.seller_country")->order_by('listing_id', 'desc')->limit($lTo,$lFrom);				
-				
-				$data["listing_list"] = $this->db->get()->result();
-				
-				
-
-				$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-
-				
-
-			}
-
-			else
-
-			{
-				$data["listing_list"] = array();
-				$data["pagination"] = array("startpage"=>0,"pages"=>0);
-				throw new Exception("No record found...");
-
-			}
-
+public function pages($startpage,$limit){
+	try{
+		if($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()>0){
+			$rec = ceil($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()/$limit);				
+			$lTo = $limit;				
+			//if($startpage<1){$startpage=1;}
+			if($startpage>$rec){$startpage = $rec;}
+			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
+			else{$lFrom = 0;}				
+			$query = $this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->order_by('post_modified', 'desc')->limit($lTo,$lFrom);				
+			$data["pages"] = $this->db->get()->result();
+			$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
 		}
-
-		catch(Exception $e)
-
-		{
-
-			$data['msg']= $e->getMessage();
-
-		}		return $data;
-
+		else{
+			$data["pages"] = array();
+			$data["pagination"] = array("startpage"=>0,"pages"=>0);
+			throw new Exception("No record found...");
+		}
 	}
+	catch(Exception $e)	{
+		$data['msg']= $e->getMessage();
+	}
+	return $data;
+}
 
 	public function listing_management($data,$startpage,$limit)
 

@@ -26,47 +26,35 @@
       <ul class="sub-menu">
         <li class="<?php if(!empty($sidemenu[2][2][1])){ echo $sidemenu[2][2][1];} ?>"> <a href="javascript:;">General <span class="arrow"></span></a>
           <ul class="sub-menu">
-            <!--<li class="<?php if(!empty($sidemenu[2][2][2][1])){ echo $sidemenu[2][2][2][1];} ?>"><a href="<?php echo base_url("general/setup_discount"); ?>">Discount&nbsp;Code </a></li>-->
             <li class="<?php if(!empty($sidemenu[2][2][2][2])){ echo $sidemenu[2][2][2][2];} ?>"><a href="<?php echo base_url("general/setup_location"); ?>">Location </a></li>
-            <?php /*?><li class="<?php if(!empty($sidemenu[2][2][2][3])){ echo $sidemenu[2][2][2][3];} ?>"><a href="<?php echo base_url("general/setup_country"); ?>">Country </a></li>
-            <li class="<?php if(!empty($sidemenu[2][2][2][4])){ echo $sidemenu[2][2][2][4];} ?>"><a href="<?php echo base_url("general/setup_currency"); ?>">Currency </a></li><?php */?>
-            <?php /*?><li class="<?php if(!empty($sidemenu[2][2][2][5])){ echo $sidemenu[2][2][2][5];} ?>"><a href="<?php echo base_url("general/setup_dayname"); ?>">Day&nbsp;Name </a></li>
-            <li class="<?php if(!empty($sidemenu[2][2][2][6])){ echo $sidemenu[2][2][2][6];} ?>"><a href="<?php echo base_url("general/setup_monthname"); ?>">Month&nbsp;Name </a></li>
-            <!--<li class="<?php if(!empty($sidemenu[2][2][2][7])){ echo $sidemenu[2][2][2][7];} ?>"><a href="<?php echo base_url("general/setup_title"); ?>">Personal&nbsp;Title </a></li>-->
-            <li class="<?php if(!empty($sidemenu[2][2][2][8])){ echo $sidemenu[2][2][2][8];} ?>"><a href="<?php echo base_url("general/setup_rangeyear"); ?>">Year&nbsp;Range </a></li>
-            <li class="<?php if(!empty($sidemenu[2][2][2][9])){ echo $sidemenu[2][2][2][9];} ?>"><a href="<?php echo base_url("general/setup_radius"); ?>">Distance Radius </a></li><?php */?>
           </ul>
         </li>
         <li class="<?php if(!empty($sidemenu[2][3][1])){ echo $sidemenu[2][3][1];} ?>"> <a href="javascript:;">Directory&nbsp;Details <span class="arrow"></span></a>
           <ul class="sub-menu">
-            <?php /*?><li class="<?php if(!empty($sidemenu[2][3][2][1])){ echo $sidemenu[2][3][2][1];} ?>"><a href="<?php echo base_url("general/setup_openstatus"); ?>">Open&nbsp;Status </a></li>
-            <li class="<?php if(!empty($sidemenu[2][3][2][2])){ echo $sidemenu[2][3][2][2];} ?>"><a href="<?php echo base_url("general/setup_openhour"); ?>">Open&nbsp;Hours </a></li><?php */?>
             <li class="<?php if(!empty($sidemenu[2][3][2][4])){ echo $sidemenu[2][3][2][4];} ?>"><a href="<?php echo base_url("general/setup_sector_listing"); ?>">Listing&nbsp;Industry </a></li>
             <li class="<?php if(!empty($sidemenu[2][3][2][3])){ echo $sidemenu[2][3][2][3];} ?>"><a href="<?php echo base_url("general/setup_category_listing"); ?>">Listing&nbsp;Category </a></li>
           </ul>
         </li>
       </ul>
     </li>
-    <!-- menu : seller -->
-    <!--<li class="<?php if(!empty($sidemenu[4][1])){ echo $sidemenu[4][1];} ?>"> <a href="javascript:;"> <i class="icon-user"></i> <span class="title">Sellers / Members </span> <span class="selected"></span> <span class="arrow open"></span> </a>
-      <ul class="sub-menu">
-        <li class="<?php if(!empty($sidemenu[4][2][1])){ echo $sidemenu[4][2][1];} ?>"><a href="<?php echo base_url("seller") ?>">Sellers / Members </a></li>
-        <?php /*?><li class="<?php if(!empty($sidemenu[4][3][1])){ echo $sidemenu[4][3][1];} ?>"><a href="<?php echo base_url("seller/seller_search/"); ?>">Search </a></li><?php */?>
-        <li class="<?php if(!empty($sidemenu[4][4][1])){ echo $sidemenu[4][4][1];} ?>"> <a href="javascript:;">Packages <span class="arrow"></span></a>
-          <ul class="sub-menu">
-            <li class="<?php if(!empty($sidemenu[4][4][2][1])){ echo $sidemenu[4][4][2][1];} ?>"><a href="<?php echo base_url("seller/listing_package/"); ?>">Package&nbsp;:&nbsp;Listing </a></li>
-            <li class="<?php if(!empty($sidemenu[4][4][2][2])){ echo $sidemenu[4][4][2][2];} ?>"><a href="<?php echo base_url("seller/subscription_package/"); ?>">Package&nbsp;:&nbsp;Subscription </a></li>
-          </ul>
-        </li>
-        <li class="<?php if(!empty($sidemenu[4][5][1])){ echo $sidemenu[4][5][1];} ?>"><a href="<?php echo base_url("seller/seller_listing_setting/"); ?>">Seller Setting </a></li>
-      </ul>
-    </li>-->
+    
     <!-- menu : pages -->
-    <li class="<?php if(!empty($sidemenu[5][1])){ echo $sidemenu[5][1];} ?>"> <a href="javascript:;"> <i class="icon-reorder"></i> <span class="title">Create Page </span> <span class="selected"></span> <span class="arrow open"></span> </a>
+    <li class="<?php if(!empty($sidemenu[9][1])){ echo $sidemenu[9][1];} ?>">
+      <a href="javascript:;">
+        <i class="icon-reorder"></i>
+        <span class="title">CMS</span>
+        <span class="selected"></span>
+        <span class="arrow open"></span>
+      </a>
       <ul class="sub-menu">
-        <li class="<?php if(!empty($sidemenu[5][2][1])){ echo $sidemenu[5][2][1];} ?>"><a href="<?php echo base_url("pages");?>">Pages</a></li>
-        <?php /*?><li class="<?php if(!empty($sidemenu[5][2][2])){ echo $sidemenu[5][2][2];}?>"><a href="<?php echo base_url("listing/listing_search");?>">Listing&nbsp;Search </a></li>
-        <li class="<?php if(!empty($sidemenu[5][2][3])){ echo $sidemenu[5][2][3];}?>"><a href="<?php echo base_url("listing/setup_field_listing");?>">Listing&nbsp;Field&nbsp;Editor </a></li><?php */?>
+        <li class="<?php if(!empty($sidemenu[9][2][1])){ echo $sidemenu[9][2][1];} ?>"><a href="<?php echo base_url("pages");?>">Pages</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][2])){ echo $sidemenu[9][2][2];} ?>"><a href="<?php echo base_url("pages/menu");?>">Menu</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][3])){ echo $sidemenu[9][2][3];} ?>"><a href="<?php echo base_url("pages/media");?>">Media</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][4])){ echo $sidemenu[9][2][4];} ?>"><a href="<?php echo base_url("pages/header");?>">Header</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][5])){ echo $sidemenu[9][2][5];} ?>"><a href="<?php echo base_url("pages/footer");?>">Footer</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][6])){ echo $sidemenu[9][2][6];} ?>"><a href="<?php echo base_url("pages/Slider");?>">Slider</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][7])){ echo $sidemenu[9][2][7];} ?>"><a href="<?php echo base_url("pages/testimonials");?>">Testimonials</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][8])){ echo $sidemenu[9][2][8];} ?>"><a href="<?php echo base_url("pages/settings");?>">Settings</a></li>
       </ul>
     </li>
     <!-- menu : listing -->

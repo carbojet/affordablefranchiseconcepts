@@ -39,6 +39,7 @@ class Login extends CI_Controller {
 	}		
 	public function access()
 	{
+	    
 		if(!array_key_exists("ud",$this->session->userdata()))
 		{
 			$this->load->model("Logindb");			
@@ -46,10 +47,12 @@ class Login extends CI_Controller {
 			$this->form_validation->set_rules("user_username","User Name","trim|required");
 			$this->form_validation->set_rules("user_password","Password","trim|required");
 			//$this->form_validation->set_rules("verification_code","Captcha","trim|callback_captcha_matches");
+			
 			if($this->callback_captcha_matches())
 			{
 				if($this->form_validation->run()!=false)
 				{
+				    
 					$this->data = array("table_name"=>"user","user_username"=>$this->input->post("user_username"),"user_password"=>$this->input->post("user_password"));
 					$result = $this->Logindb->login($this->data);
 					if(count($result)>0)
@@ -82,6 +85,7 @@ class Login extends CI_Controller {
 				$this->data["validation_errors"] = "<em>Please enter valid Captcha</em>";
 				$this->load->view('login',$this->data);
 			}
+			
 		}
 		elseif(array_key_exists("ud",$this->session->userdata()))
 		{
@@ -92,7 +96,8 @@ class Login extends CI_Controller {
 		{
 			$this->data["captcha"] = $this->random_code_gen();
 			$this->load->view('login',$this->data);
-		}		
+		}
+		
 	}
 	public function callback_captcha_matches()
 	{

@@ -64,10 +64,10 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'afford64_wp3',
+	'username' => 'axisgtja_afford64_wp3',
 	'password' => 'mU4X3f9,=d6T',
-	'database' => 'afford64_wp3',
-	'dbdriver' => 'mysql',
+	'database' => 'axisgtja_afford64_wp3',
+	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => TRUE,
