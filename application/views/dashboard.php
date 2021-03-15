@@ -1,0 +1,171 @@
+<?php
+
+	$this->load->view("head");
+
+?>
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link href="gui/ltr/plugins/glyphicons/css/glyphicons.css" rel="stylesheet" />
+<link href="gui/ltr/plugins/glyphicons_halflings/css/halflings.css" rel="stylesheet" />
+<!-- END PAGE LEVEL STYLES -->
+</head><!-- BEGIN BODY -->
+<body class="fixed-top">
+<!-- BEGIN HEADER -->
+<?php
+
+		$this->load->view("menu");
+
+	?>
+<!-- BEGIN CONTAINER -->
+<!-- <div class="page-container row-fluid sidebar-closed"> -->
+<div class="page-container row-fluid">
+  <!-- BEGIN SIDEBAR -->
+  <!--- lookup database :: sidebar_menu_setup :: done -->
+  <!--- lookup database :: sidebar_menu_lookup_general :: done -->
+  <!--- lookup database :: sidebar_menu_lookup_directory :: done -->
+  <!--- lookup database :: sidebar_menu_lookup_additional :: done -->
+  <!--- lookup database :: sidebar_menu_lookup_feature :: done -->
+  <!--- seller -->
+  <!--- advertiser -->
+  <!--- visitor -->
+  <!--- listing -->
+  <!-- payment -->
+  <!-- approval -->
+  <?php
+
+		$sidemenu[1] =array("1"=>"active","2"=>array("1"=>"active"));
+
+		$data["sidemenu"] =  $sidemenu; 
+
+		$this->load->view("sidebar",$data);
+
+	?>
+  <!-- BEGIN PAGE -->
+  <div class="page-content">
+    <!-- BEGIN PAGE CONTAINER-->
+    <div class="container-fluid">
+      <!-- BEGIN PAGE HEADER-->
+      <div class="row-fluid">
+        <div class="span12">
+          <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+          <h3 class="page-title">Dashboard</h3>
+          <!-- END PAGE TITLE & BREADCRUMB-->
+        </div>
+      </div>
+      <!-- END PAGE HEADER-->
+      <!-- BEGIN PAGE CONTENT-->
+      <div class="tiles" style="max-width:900px; height:600px">
+        <!--<div class="tile" style="background-color:#E4287C;" onClick="location.href='<?php echo base_url('approval/seller_approval/');?>'">
+          <div class="tile-body"> <i class="icon-user"></i> </div>
+          <div class="tile-object" style="text-align:center"> Approve&nbsp;Sellers<br>
+            (<?php echo $seller_approval;?>) </div>
+        </div>
+        <div class="tile" style="background-color:#493D26;" onClick="location.href='<?php echo base_url('approval/photo_approval/');?>'">
+          <div class="tile-body"> <i class="icon-picture"></i> </div>
+          <div class="tile-object" style="text-align:center"> Approve&nbsp;Photos<br>
+            (<?php //echo $photo_approval;?>) </div>
+        </div>
+        <div class="tile" style="background-color:#E4287C;" onClick="location.href='<?php echo base_url('approval/video_approval/');?>'">
+          <div class="tile-body"> <i class="icon-facetime-video"></i> </div>
+          <div class="tile-object" style="text-align:center"> Approve&nbsp;Videos<br>
+            (<?php echo $video_approval;?>) </div>
+        </div>
+        <div class="tile" style="background-color:#E4287C;" onClick="location.href='<?php echo base_url('approval/review_approval/');?>'">
+          <div class="tile-body"> <i class="icon-comments"></i> </div>
+          <div class="tile-object" style="text-align:center"> Approve&nbsp;Reviews<br>
+            (<?php echo $review_approval;?>) </div>
+        </div>
+        <div class="tile" style="background-color:#7D1B7E;" onClick="location.href='<?php echo base_url('approval/visitor_approval/');?>'">
+          <div class="tile-body"> <i class="icon-user"></i> </div>
+          <div class="tile-object" style="text-align:center"> Approve&nbsp;Visitors<br>
+            (<?php echo $visitor_approval;?>) </div>
+        </div>-->
+        <div class="tile" style="background-color:#9F000F;" onClick="location.href='<?php echo base_url("/user/"); ?>'">
+          <div class="tile-body"> <i class="icon-user-md"></i> </div>
+          <div class="tile-object" style="text-align:center"> Administrator&nbsp;Users<br>
+            (<?php echo $users;?>) </div>
+        </div>
+        <!--<div class="tile" style="background-color:#400000;" onClick="location.href='<?php echo base_url("/payment/all_payments/"); ?>'">
+          <div class="tile-body"> <i class="icon-money"></i> </div>
+          <div class="tile-object" style="text-align:center"> Payments<br>
+            ($ <?php echo $payment_amount;?>) </div>
+        </div>-->
+        <div class="tile" style="background-color:#C35817;" onClick="location.href='#'">
+          <div class="tile-body"> <i class="icon-info-sign"></i> </div>
+          <div class="tile-object" style="text-align:center"> Complete Information </div>
+        </div>
+        <div class="tile bg-red" onClick="location.href='<?php echo base_url("/login/logout/"); ?>'">
+          <div class="tile-body"> <i class="icon-off"></i> </div>
+          <div class="tile-object" style="text-align:center"> Logout </div>
+        </div>
+      </div>
+      <!-- END PAGE CONTENT-->
+    </div>
+    <!-- END PAGE CONTAINER-->
+  </div>
+  <!-- END PAGE -->
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<!-- BEGIN FOOTER -->
+<div class="footer" style="text-align:center; background-color:#1B2E44;"> <a href="http://www.affordablebusinessconcepts.com/" style="color:#FC0; background-color:#1b2e44">&copy; Affordable Busindess Concepts LLC</a>
+  <div class="span pull-right"> <span class="go-top" style="background-color: #FFC000;"><i class="icon-angle-up"></i></span> </div>
+</div>
+<!-- END FOOTER -->
+<!-- END FOOTER -->
+<?php
+
+	$this->load->view("foot");
+
+?>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="<?php echo base_url(); ?>theme/scripts/app.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+
+		jQuery(document).ready(function() {       
+
+			// initiate layout and plugins
+
+			App.init();
+
+		});
+
+	</script>
+<script>
+
+		jQuery.fn.ajaxLog = function()
+
+		{
+
+			jQuery.ajax({
+
+				type:'POST',
+
+				url:'<?php echo base_url("login/ajax_log_status"); ?>',
+
+				ContentType : 'application/json',
+
+				success:function(data){
+
+					if(data.log_status>0)
+
+					{
+
+						window.location.assign('<?php echo base_url("login"); ?>');
+
+					}
+
+				}
+
+			});
+
+		}
+
+		setInterval(jQuery.fn.ajaxLog,1000);
+
+		jQuery.fn.ajaxLog();
+
+	</script>
+</body>
+<!-- END BODY -->
+</html>

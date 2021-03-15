@@ -1,0 +1,56 @@
+/* custom styles for data tds */
+
+.td_label {
+	float:left;
+	color:#484848;
+	margin:0 10px 0 0;
+	padding:0;
+	font-weight:700;
+}
+.td_value {
+	float:left;
+	color:#484848;
+	margin:0;
+	padding:0;
+}
+.td_clear {
+	clear:both;
+}
+
+
+.td_w60 {
+	width:60px;
+	max-width:60px;
+	overflow:hidden;
+}
+.td_w80 {
+	width:80px;
+	max-width:80px;
+	overflow:hidden;
+}
+.td_w100 {
+	width:100px;
+	max-width:100px;
+	overflow:hidden;
+}
+.td_w120 {
+	width:120px;
+	max-width:120px;
+	overflow:hidden;
+}
+.td_w150 {
+	width:150px;
+	max-width:150px;
+	overflow:hidden;
+}
+.td_w200 {
+	width:200px;
+	max-width:200px;
+	overflow:hidden;
+}
+
+
+@media (max-width: 1024px) { 
+	.td_label { font-size: 11px !important; }
+	.td_value { font-size: 11px !important; }
+}

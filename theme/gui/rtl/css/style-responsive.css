@@ -1,0 +1,507 @@
+@media (min-width: 1280px) { 
+	.header .hor-menu {
+  		margin-right: 99px;
+	}
+}
+
+@media (max-width: 1024px) { 
+	.header .hor-menu {
+  		margin-right: 29px;
+	}
+}
+
+/***
+Large notebooks and desktops
+***/
+ @media (min-width: 980px) { 
+
+ 	/***
+ 	Page sidebar
+ 	***/
+ 	.page-sidebar {
+		position: absolute;
+		float: right;
+ 		width: 225px;
+  	}
+
+  	.page-sidebar ul{
+  		width: 225px;
+  	}
+
+	/** new edit */
+	.portfolio-text img { width:200px; height:133px; }
+	.portfolio-text h4 { }
+	
+  	/***
+  	Page content
+  	***/
+  	.page-content { 
+  		margin-right: 225px; 
+		margin-top: 0px;
+		min-height: 860px; 
+	}
+
+	.page-content.no-min-height {
+		min-height: auto;
+	}
+
+	.full-width-page .page-content {
+		margin-right: 0px !important;
+	}
+}
+
+/***
+For tablets and phones
+***/
+@media (max-width:979px) { 
+	
+	/***
+	Body
+	***/
+	body {
+		margin: 0px !important;
+	}	
+
+	/***
+ 	Page header
+ 	***/
+ 	.header {
+ 		margin: 0 !important;
+ 	}
+
+	.header .nav li.dropdown i {
+		display: inline-block;
+		position: relative;
+		top:1px;
+		left:0px;
+	}
+
+	.header .nav {
+		margin-bottom: 0px !important;
+	}
+
+	/***
+	Page container
+	***/
+	.page-container {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	.fixed-top .page-container {
+		margin-top: 0px !important;
+	}
+
+	/***
+  	Page content
+  	***/
+  	.page-content {
+  		margin: 0px !important;
+  		padding: 0px !important;  		
+		min-height: 280px; 
+  	}
+
+	/***
+	Page sidebar
+	***/
+	.page-sidebar {
+		margin: 0 10px;
+	}
+
+	.page-sidebar.in {
+		margin: 10px;
+		position: relative;
+		z-index: 5;
+	}
+
+	.page-sidebar .sidebar-toggler {
+		display: none;
+	}
+
+	.page-sidebar ul {
+		margin-top:0px;
+		width:100%;
+	}
+
+	.page-sidebar .selected {
+		display: none !important;
+	}
+
+	.page-sidebar .sidebar-search {
+	  width: 220px;
+	  margin-top: 20px;
+	  margin-bottom:20px;
+	}
+
+	/***
+	Page title
+	***/
+	.page-title {
+		margin: 15px 0px;
+	}
+
+	/***
+	Styler panel
+	***/
+	.styler-panel {
+		top:55px;
+		left:20px;
+	}
+
+	/* hide if resolution is less than 980 */
+	.hidden-980 {
+		display: none;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1280px) { 
+
+	/***
+	Form wizard
+	***/
+	.form-wizard .step .desc {
+	  margin-top: 10px;
+	  display: block;
+	}
+
+	/***
+	Pricing tables
+	***/
+
+	.pricing-table .rate .price,
+	.pricing-table2 .rate .price {
+		width: 100%;
+		display: block;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+} 
+ 
+@media (min-width: 768px) and (max-width: 979px) { 
+
+	/***
+	Body
+	***/
+	body {
+	 	padding-top: 0px;
+	}
+
+	/***
+	Page sidebar
+	***/
+	.page-sidebar .btn-navbar.collapsed .arrow { 
+		display: none;
+	}	
+
+	.page-sidebar .btn-navbar .arrow {
+	  position: absolute;
+	  left: 25px;
+	  width: 0; 
+	  height: 0;
+	  top:50px;
+	  border-bottom: 15px solid #5f646b;
+	  border-right: 15px solid transparent; 
+	  border-left: 15px solid transparent; 
+	}
+
+} 
+ 
+@media (max-width: 767px) { 
+	
+	/***
+	Page header
+	***/
+	.header .navbar-inner .container-fluid,
+	.header .navbar-inner .container {
+		margin-right: 10px !important;
+		margin-left: 10px !important;
+	}
+
+	.header .top-nav .nav{  
+	 	margin-top: 0px;
+	 	margin-left: 5px;
+	}
+
+	.header .nav > li > .dropdown-menu.notification:after, 
+	.header .nav > li > .dropdown-menu.notification:before {
+		margin-left: 180px;
+	}
+
+	.header .nav > li > .dropdown-menu.notification {
+  		margin-left: -180px;
+	}
+
+	.header .nav > li > .dropdown-menu.inbox:after, 
+	.header .nav > li > .dropdown-menu.inbox:before {
+		margin-left: 140px;
+	}
+
+	.header .nav > li > .dropdown-menu.inbox {
+  		margin-left: -140px;
+	}
+
+	.header .nav > li > .dropdown-menu.tasks:after, 
+	.header .nav > li > .dropdown-menu.tasks:before {
+		margin-left: 90px;
+	}
+
+	.header .nav > li > .dropdown-menu.tasks {
+  		margin-left: -90px;
+	}
+	
+	/***
+	Page content
+	***/
+	.page-content {
+		padding: 10px !important;
+	}
+
+	/***
+	Page title
+	***/
+	.page-title {
+		margin-bottom: 20px;
+	}
+	
+	/***
+	Styler pagel
+	***/
+	.styler-panel {
+		top:58px;
+		left:12px;
+	}	
+
+	/***
+	Page breadcrumb
+	***/
+	.breadcrumb {
+		padding-right: 10px;
+  		padding-left: 10px;
+	}
+
+	/***
+	Portlet form action
+	***/
+	.portlet-body.form .form-actions{
+	  padding-right: 15px;	
+	} 
+
+	/***
+	Gritter notification
+	***/
+	#gritter-notice-wrapper {
+		left:1px !important;
+	}
+
+	/***
+	Form input validation states
+	***/
+	.input-icon .input-error, 
+	.input-icon .input-warning, 
+	.input-icon .input-success { 
+		top:-27px;
+		float: left;
+		left:10px !important;
+	}	
+
+	/***
+	Advance tables
+	***/
+	.table-advance tr td.highlight:first-child a {
+		margin-right: 8px;
+	}
+
+	/***
+	Footer	
+	***/	
+	.footer {
+		padding-right: 10px;
+		padding-left: 10px;		
+	}	
+	
+	.footer .go-top {  
+		float: left;
+		display: block;
+		margin-top: -22px;
+		margin-left: 0px;
+		margin-bottom: 5px !important;
+	}
+
+	/***
+	Vertical inline menu
+	***/
+	.ver-inline-menu li.active:after {
+		display: none;
+	}
+
+	/***
+	Form controls
+	***/
+	.form-horizontal .form-actions {
+  		padding-right: 180px; 	
+  	}
+
+  	.portlet .form-horizontal .form-actions {
+  		padding-right: 190px; 	
+  	}
+	
+	.hidden-768 {
+		display: none;
+	}	
+
+}
+
+@media (max-width: 480px) {
+
+	/***
+	Header navbar
+	***/
+	.header .nav {
+		clear:both !important;
+	}
+
+	.header .nav > li.dropdown .dropdown-toggle {
+  		margin-top:3px !important;
+  	}	
+
+  	.header .nav li.dropdown .dropdown-toggle .badge {
+  		top: 11px;
+  	}
+
+  	/***
+	Page sidebar
+	***/
+	.page-sidebar.in {
+		margin-top: 7px !important;
+	}
+	
+	/** new edit */
+	.portfolio-text img { width:100px; height:67px; }
+	.portfolio-text h4 { font-size:16px; font-weight:bold; }	
+
+	/***
+	Styler panel
+	***/
+	.styler-panel {
+		top:92px;
+		left:12px;
+	}	
+
+	/***
+	Page title
+	***/
+	.page-title small {
+		display: block;
+		clear: both;
+	}
+
+	/***
+	Dashboard date range panel
+	***/
+	.page-content .breadcrumb .dashboard-date-range  {
+		padding-bottom: 8px;
+	} 
+
+	.page-content .breadcrumb .dashboard-date-range span {
+		display: none;
+	}
+
+	/***
+	Form controls
+	***/	
+	.form-horizontal.form-bordered .control-label {
+	    float: none;
+	    width: auto;
+	    padding-top: 0;
+	    text-align: right;
+	    margin-top: 0;
+	    margin-right: 10px;
+	}
+
+	.form-horizontal.form-bordered .controls {
+		padding-top: 0 !important;
+		border-right: 0 !important;	
+	}
+
+	.form-horizontal.form-bordered.form-label-stripped .control-group:nth-child(even) {
+	  background-color: none !important;
+	} 
+
+	.form-horizontal.form-bordered.form-label-stripped .control-group:nth-child(even) .controls {
+	  background-color: none !important;  
+	}
+
+	.form-horizontal.form-row-seperated .control-label {
+	    float: none;
+	    width: auto;
+	    padding-top: 0;
+	    text-align: right;
+	    margin-right: 10px;
+	}
+
+  	.form-horizontal.form-row-seperated .controls {
+		border-right: 0;
+    	margin-right: 10px;
+  	}
+
+  	.portlet .form-horizontal .form-actions {
+  		padding-right: 10px; 	
+  	}
+
+	/***
+	Hidden phone
+	***/
+	.hidden-480 {
+		display: none;
+	}
+
+	/***
+	Modal header close button fix
+	***/
+	.modal-header .close {
+		margin-top: 5px !important;		
+		margin-left: 0px !important;
+	}
+
+	/***
+	Fix portlet tabs
+	***/
+	.portlet-tabs .nav-tabs {
+		margin-top: 2px;
+	}
+
+
+  	/***
+	For RTL support
+	***/
+  	.control-group .control-label {
+  		display: block !important;
+  		clear: both !important;
+  	}
+
+  	.control-group .controls {
+  		display: block !important;
+  		clear: both !important;
+  	}
+
+  	.control-group .controls .text {
+  		display: block !important;
+  		margin-bottom: 10px;
+  	}
+}
+
+@media (max-width: 320px) {
+
+	.header .nav > li.dropdown .dropdown-toggle {
+	  padding-right: 8px !important;
+	  padding-left: 8px !important;
+	}
+
+	/***
+	Hidden phone
+	***/
+	.hidden-320 {
+		display: none;
+	}
+}	

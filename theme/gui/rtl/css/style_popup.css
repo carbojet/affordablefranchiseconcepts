@@ -1,0 +1,303 @@
+body{ margin:0px; }
+a{
+	text-decoration : none;
+}
+
+/*  GLOBAL TOP  */
+.top_menu {
+	color 			: #FFFFFF;
+	font			: normal 12px Arial;
+}
+
+.top_menu:hover {
+	color 			: #FFFFFF;
+	font			: normal 12px Arial;
+	text-decoration : underline;
+}
+
+.top_menu_separator {
+	font			: normal 12px  Arial, Helvetica, sans-serif;
+	color			: #FFFFFF;
+}
+
+
+
+/* PAGE */
+.page_title{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #c00000;
+	color			: #666666;
+	font-weight		: bold;
+}
+
+
+/* LIST */
+.list_text{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+}
+.list_text_warning{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #C10000;
+}
+.list_title_bar{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #ffffff;
+	font-weight		: bold;
+	background-color: #4e8edb;
+}
+.link_title_blue{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+}
+.list_link{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #c00000;	
+}
+.list_link:hover{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #c00000;
+	text-decoration : underline;
+}
+
+
+/* CALENDAR */
+.calendar_title_blue{
+	font			: normal 24px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+}
+.calendar_title_white{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #FFFFFF;
+	font-weight		: bold;
+}
+.calendar_detail_small_blue{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+}
+.calendar_detail_small_red{
+	font			: normal 10px Arial, Helvetica, sans-serif;
+	color			: #C10000;
+	font-weight		: bold;
+}
+.calendar_small_title_blue{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+}
+.calendar_small_title_white{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #FFFFFF;
+	font-weight		: bold;
+}
+.calendar_small_detail_small_blue{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+	font-weight		: bold;
+}
+.calendar_small_detail_small_red{
+	font			: normal 10px Arial, Helvetica, sans-serif;
+	color			: #C10000;
+	font-weight		: bold;
+}
+
+
+
+
+
+/* OTHERS AND WARNING */
+.arrow{
+	font			: normal 16px Arial, Helvetica, sans-serif;
+	color			: #c00000;	
+}
+.warning{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #c00000;		
+}
+
+
+
+.textbox {
+	border			: 1px solid #A3CAF1;
+	font			: normal 12px  Arial, Helvetica, sans-serif;
+	color 			: #0D388A;
+	vertical-align	: middle;
+}
+
+
+
+
+/* LINK */
+.link_button{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+}
+.link_button:hover{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #01418b;
+	font-weight		: bold;
+	text-decoration : underline;
+}
+
+
+/* FORM */
+.form_title{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #c00000;
+	font-weight		: bold;
+}
+.form_field{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+}
+.form_text{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+}
+.form_text_small{
+	font			: normal 10px Arial, Helvetica, sans-serif;
+	color			: #000000;
+}
+.form_textbox{
+	border			: 1px solid #666666;
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+	vertical-align	: middle;
+}
+.form_no_editor{
+	border			: 1px solid #666666;
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #000000;
+	vertical-align	: middle;
+}
+.form_field_warning{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			:#FF0000
+}
+.form_calendar_day{
+	font			: normal 12px Arial, Helvetica, sans-serif;
+	color			: #6babf5;
+}
+
+
+.normal_10_red  {
+	COLOR 		: #C4151C;
+	FONT 		: normal 10px Arial;
+}
+
+.normal_11_red  {
+	COLOR 		: #C4151C;
+	FONT 		: normal 11px Arial;
+}
+
+.normal_11_black  {
+	COLOR 		: #000000;
+	FONT 		: normal 11px Arial;
+}
+
+.normal_12_black {
+	COLOR		: #42474e;
+	FONT 		: normal 12px Arial;
+}
+.normal_12_red  {
+	COLOR 		: #C4151C;
+	FONT 		: normal 12px Arial;
+}
+.normal_12_blue  {
+	COLOR 		: #01418b;
+	FONT 		: normal 12px Arial;
+}
+.normal_12_blue:hover {
+	COLOR 		: #01418b;
+	FONT 		: normal 11px Arial;
+	TEXT-DECORATION : underline; 
+}
+.normal_12_white  {
+	COLOR 		: #FFFFFF;
+	FONT 		: normal 12px Arial;
+}
+
+.normal_13_black {
+	COLOR		: #42474e;
+	FONT 		: normal 13px Arial;
+}
+
+.normal_14_black{
+	font		: normal 14px Arial, Helvetica, sans-serif;
+	color		: #000000;
+	font-weight	: bold;
+}
+.normal_14_blue{
+	font		: normal 14px Arial, Helvetica, sans-serif;
+	color		: #01418b;
+	font-weight	: bold;
+}
+.normal_14_red  {
+	COLOR 		: #C4151C;
+	FONT 		: normal 14px Arial;
+}
+.normal_14_green  { 
+	color		: #006600;
+	FONT 		: normal 14px Arial;
+}
+.normal_14_gray  { 
+	color		: #999999;
+	FONT 		: normal 14px Arial;
+}.
+.normal_14_red  { 
+	color		: #FF0000;
+	FONT 		: normal 14px Arial;
+}
+.normal_14_white{
+	font		: normal 14px Arial, Helvetica, sans-serif;
+	color		: #FFFFFF;
+	font-weight	: bold;
+}
+
+.normal_16_silver  {
+	COLOR		: #42474e;
+	FONT 		: normal 16px Arial;
+}
+.normal_16_red{
+	font		: normal 16px Arial, Helvetica, sans-serif;
+	color		: #C4151C;
+	font-weight	: bold;
+}
+.normal_16_white{
+	font		: normal 16px Arial, Helvetica, sans-serif;
+	color		: #FFFFFF;
+	font-weight	: bold;
+}
+
+.normal_20_red  {
+	COLOR 		: #C4151C;
+	FONT 		: normal 20px Arial;
+}
+.normal_20_blue  {
+	COLOR		: #01418b;
+	FONT 		: normal 20px Arial;
+}
+
+
+.textbox {
+	font-size 	: 12px;
+	color 		: Black;
+	vertical-align : middle;
+}
+
+.warning {
+	font	: normal 12px  Arial, Helvetica, sans-serif;
+	color	: #C10000;
+}
+
+.warning_textbox {
+	border			: 1px solid #A3CAF1;
+	background-color:#990000;
+	font			: normal 12px  Arial, Helvetica, sans-serif;
+	color			: #FFFF00;
+	vertical-align	: middle;
+}
