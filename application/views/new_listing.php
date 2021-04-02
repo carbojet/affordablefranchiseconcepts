@@ -166,6 +166,26 @@ input[type=checkbox] {
                     <input type="text" name="listing_title_1" value="<?php echo $listingObj->listing_title_1; ?>" data-required="1" class="span6 m-wrap" style="">
                   </div>
                 </div>
+
+                <div class="control-group form_field">
+                  <label class="control-label"> Slug <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_slug" value="<?php echo $listingObj->listing_slug; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+                <div class="control-group form_field">
+                  <label class="control-label"> Keywords <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_keywords" value="<?php echo $listingObj->listing_keywords; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+                <div class="control-group form_field">
+                  <label class="control-label"> Meta Description <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_meta_description" value="<?php echo $listingObj->listing_meta_description; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+
                 <!--- FORM SECTION - END : BUSINESS NAME -->
                 <div class="control-group" style="margin-top:50px">
                   <label class="control-label"></label>
@@ -522,7 +542,10 @@ input[type=checkbox] {
 
 														
 
-							listing_title_1:		{ required: true },
+              listing_title_1:		{ required: true },
+              listing_slug:		{ required: true },
+              listing_keywords:		{ required: true },
+              listing_meta_description:		{ required: true },
 
 							//listing_descbrief_1:	{ required: true },
 
@@ -608,6 +631,9 @@ input[type=checkbox] {
 														
 
 							listing_title_1:		{ required: "Please fill this field." },
+              listing_slug:		    { required: "Please fill this field." },
+              listing_keywords:		{ required: "Please fill this field." },
+              listing_meta_description:		{ required: "Please fill this field." },
 
 							//listing_descbrief_1:	{ required: "Please fill this field." },
 
@@ -760,6 +786,7 @@ input[type=checkbox] {
 			});
 			jQuery("body").on("click","button[name=addbutton]",function(){
 				len = jQuery("select.listing_sector").length+1;	
+        console.log(len)
 				if(len<=3){
 				addrow = jQuery(this).closest(".form_field").clone();
 				addrow.find("div.adbtn").remove();
@@ -772,6 +799,15 @@ input[type=checkbox] {
 				jQuery("listing_category_count").val(len)
 				}
 				
+			})
+      /*
+      jQuery("body").on("change","input[name=post_title]",function(e){
+				
+				jQuery("input[name=post_name]").val(jQuery("input[name=post_title]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
+			})
+      */
+			jQuery("body").on("change","input[name=listing_slug]",function(e){
+				jQuery("input[name=listing_slug]").val(jQuery("input[name=listing_slug]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
 			})
 			
 			jQuery("body").on("click","button[name=minusbutton]",function(){
@@ -786,8 +822,10 @@ input[type=checkbox] {
 					
 
 		});
-
-		CKEDITOR.replace( '', { language: 'en' });
+    if(CKEDITOR){
+      CKEDITOR.replace( '', { language: 'en' });
+    }
+		
 
 	</script>
 <script>

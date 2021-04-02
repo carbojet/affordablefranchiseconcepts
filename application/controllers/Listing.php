@@ -1656,11 +1656,7 @@ class Listing extends CI_Controller {
 					$prime_categoryObj = $this->Listingdb->get_prime_category(array("category_id"=>$val));
 					$category_name_list .= $prime_categoryObj->category_name_1." + ";
 				}
-				
-
-				$listing_status_keywords = $this->input->post("listing_title_1")." + ".str_replace(" ","-",$this->input->post("listing_title_1"))." + ".$this->input->post("listing_descfull_1")." + ".$category_name_list." + ".$this->input->post("listing_address")." + ".$this->input->post("listing_address2")."+".$this->input->post("listing_facilities")."+".$this->input->post("listing_competition")."+".$this->input->post("listing_growth")."+".$this->input->post("listing_financing")."+".$this->input->post("listing_training")."+".$this->input->post("listing_address2");
-
-				
+				$listing_status_keywords = $this->input->post("listing_title_1")." + ".str_replace(" ","-",$this->input->post("listing_title_1"))." + ".$this->input->post("listing_descfull_1")." + ".$category_name_list." + ".$this->input->post("listing_address")." + ".$this->input->post("listing_address2")."+".$this->input->post("listing_facilities")."+".$this->input->post("listing_competition")."+".$this->input->post("listing_growth")."+".$this->input->post("listing_financing")."+".$this->input->post("listing_training")."+".$this->input->post("listing_address2");			
 
 				$listing_url_1 = str_replace(" ","-",$this->input->post("listing_title_1"));
 

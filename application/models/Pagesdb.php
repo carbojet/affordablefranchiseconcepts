@@ -6,1020 +6,358 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 class Pagesdb extends CI_Model {
-
-
-
 	/**
-
 	 * Index Page for this controller.
-
 	 *
-
 	 * Maps to the following URL
-
 	 * 		http://example.com/index.php/welcome
-
 	 *	- or -
-
 	 * 		http://example.com/index.php/welcome/index
-
 	 *	- or -
-
 	 * Since this controller is set as the default controller in
-
 	 * config/routes.php, it's displayed at http://example.com/
-
 	 *
-
 	 * So any other public methods not prefixed with an underscore will
-
 	 * map to /index.php/welcome/<method_name>
-
 	 * @see http://codeigniter.com/user_guide/general/urls.html
-
 	 */
-
-	public function __construct()
-
-	{
-
+	public function __construct(){
 		parent::__construct();
-
 	}
 
-	public function temp_fun()
-	{}	
-
-public function listing_location_path($path){
-
-$path = explode("-",$path);
-$result1 = $this->db->get_where("setup_location",array("location_parent"=>0,"location_id"=>$path[1]))->result();
-foreach($result1 as $obj){ $country = $obj->location_name;}
-
-$result2 = $this->db->get_where("setup_location",array("location_id"=>$path[2]))->result();
-foreach($result2 as $obj){ $state = $obj->location_name;}
-
-$result3 = $this->db->get_where("setup_location",array("location_id"=>$path[3]))->result();
-foreach($result3 as $obj){ $city = $obj->location_name;}
-
-return "$city, $state, $country";
-
-
-}
-
-
-public function pages($startpage,$limit){
-	try{
-		if($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()>0){
-			$rec = ceil($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()/$limit);				
-			$lTo = $limit;				
-			//if($startpage<1){$startpage=1;}
-			if($startpage>$rec){$startpage = $rec;}
-			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-			else{$lFrom = 0;}				
-			$query = $this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->order_by('post_modified', 'desc')->limit($lTo,$lFrom);				
-			$data["pages"] = $this->db->get()->result();
-			$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-		}
-		else{
-			$data["pages"] = array();
-			$data["pagination"] = array("startpage"=>0,"pages"=>0);
-			throw new Exception("No record found...");
-		}
-	}
-	catch(Exception $e)	{
-		$data['msg']= $e->getMessage();
-	}
-	return $data;
-}
-
-	public function listing_management($data,$startpage,$limit)
-
-	{
-
-		try
-
-		{			
-
-			$query = $this->db->select("*")->from("listing")->where("listing_seller",$data["listing_seller"]);			
-
-			$rec = ceil($this->db->get()->num_rows()/$limit);
-
-			//re using query for fetching records
-
-			$query = $this->db->select("*")->from("listing")->where("listing_seller",$data["listing_seller"]);			
-
-			$query = $query->join('seller', 'listing.listing_seller = seller.seller_id')->join('setup_country', 'seller.seller_country = setup_country.country_id');			
-
-			$query = $query->order_by("listing_id",'desc');			
-
-			$lTo = $limit;			
-
-			if($startpage<1){$startpage=1;}
-
-			if($startpage>$rec){$startpage = $rec;}
-
-			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-
-			else{$lFrom = 0;} 			
-
-			$query->limit($lTo,$lFrom);	
-
-			$data["listing_list"] = $this->db->get()->result();		
-
-			
-
-			$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-
-			return $data;
-
-		}
-
-		catch(Exception $e)
-
-		{
-
-			return $e->getMessage();
-
-		}		
-
-	}
-
-	public function get_listing_search_result($data,$startpage=0,$limit=100)
-	{
-		try
-		{		
-			//$this->db->select('*');
-//			$this->db->from('listing');
-//			$this->db->join("seller","listing.listing_seller=seller.seller_id");
-			
-			$where ="";
-			if(!empty($data["listing_id"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_id='".$data["listing_id"]."'";
-				
-				//$this->db->where("listing.listing_id",$data["listing_id"]);
+	public function pages($startpage,$limit){
+		try{
+			if($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()>0){
+				$rec = ceil($this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->get()->num_rows()/$limit);				
+				$lTo = $limit;				
+				//if($startpage<1){$startpage=1;}
+				if($startpage>$rec){$startpage = $rec;}
+				if($startpage>1){$lFrom = ($startpage-1)*$limit;}
+				else{$lFrom = 0;}				
+				$query = $this->db->select("*")->from("wp_posts")->where(array("post_type"=>"page"))->order_by('post_modified', 'desc')->limit($lTo,$lFrom);				
+				$data["pages"] = $this->db->get()->result();
+				$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
 			}
-			
-			if(!empty($data["listing_status_keywords"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_status_keywords like '%".$data["listing_status_keywords"]." %'";
-				
-				//$this->db->like("listing.listing_status_keywords",$data["listing_id"],'both');
-			}
-
-			if(!empty($data["listing_sector"])){
-				//$listing_sector = "-".$data["listing_sector"]."-";
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_category_path like '%-".$data["listing_sector"]."-%'";
-				
-				//$this->db->like("listing.listing_category_path",$data["listing_sector"],'both');			
-				if(!empty($data["listing_category"])){
-					
-					if(!empty($where)){$where .=' and ';}
-					$where .= "listing.listing_category_path like '%-".$data["listing_category"]."-%'";
-					
-					//$this->db->like("listing.listing_category_path",$data["listing_category_1"],'both');				
-					
-				}
-			}
-			
-			
-			
-			if(!empty($data["listing_location_path"])){if(!empty($where)){$where .=' and ';}
-			
-				foreach($data["listing_location_path"] as $k=>$listing_location_path){
-				
-					if($k>0){$where .=' or ';}					
-					$where .= "listing.listing_location_path like '".$listing_location_path."%'";
-					
-					//$this->db->or_like("listing.listing_location_path",$listing_location_path,'right');
-				}
-			
-			}
-			
-			if(!empty($data["listing_zip"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_zip='".$data["listing_zip"]."'";
-				//$this->db->where("listing.listing_zip",$data["listing_zip"]);
-			}
-			
-			if(!empty($data["s_status"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_status='".$data["s_status"]."'";
-				//$this->db->where("listing.listing_status",$data["s_status"]);
-			}
-			
-			if(!empty($data["s_featured"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_status_feature='".$data["s_featured"]."'";
-				//$this->db->where("listing.listing_status_feature",$data["s_featured"]);
-			}
-			
-			if(!empty($data["listing_status_new"]))
-			{
-				if(!empty($where)){$where .=' and ';}
-				$where .= "listing.listing_status_new='".$data["listing_status_new"]."'";
-				//$this->db->where("listing.listing_status_new",$data["listing_status_new"]);
-			}
-			
-			if(!empty($data["listing_seller_id"]))
-			{
-			
-				if(!empty($where)){$where .=' and ';}
-				$where .= "seller.seller_username like '".$data["listing_seller_id"]."%'";
-				//$this->db->like("seller.seller_username",$data["listing_status_new"],'right');
-			}
-			
-			if(!empty($data["visit_status"])){
-				if($data["visit_status"]=="any")
-				{
-					if(!empty($where)){$where .=' and ';}
-					$where .= "listing.listing_visited >='0'";
-				}
-				if($data["visit_status"]=="visited")
-				{
-					if(!empty($where)){$where .=' and ';}
-					$where .= "listing.listing_visited >'0'";
-				}
-				if($data["visit_status"]=="not_visited")
-				{
-					if(!empty($where)){$where .=' and ';}
-					$where .= "listing.listing_visited <='0'";
-				}
-			}
-			if(!empty($where)){$where .=' and ';}
-			$where .= "seller.seller_id=listing.listing_seller";	
-			
-			
-			$order_by ="";
-			switch($data["s_order"])
-			{				
-				case "listing_id asc":
-					$order_by = " order by listing.listing_id asc";
-					
-				break;
-				case "listing_visited asc":
-					$order_by = " order by listing.listing_visited asc";
-					
-				break;
-				case "listing_visited desc":
-					$order_by = " order by listing.listing_visited desc";
-					
-				break;
-				default:
-					$order_by = " order by listing.listing_id desc";
-					
-				break;
-			}
-			
-			
-			//,(select count(*) from visitor_comment where visitor_comment.comment_linkid=listing.listing_id) as 'visitor_status'
-			
-			$rec = ceil($this->db->query("select * from listing,seller where ".$where.$order_by)->num_rows()/$limit);			
-			
-			//$rec = ceil($this->db->get()->num_rows()/$limit);
-			
-			$lTo = $limit;
-
-			if($startpage<1){$startpage=1;}
-
-			if($startpage>$rec){$startpage = $rec;}
-
-			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-
-			else{$lFrom = 0;} 				
-				
-			$data["startpage"] = $startpage;
-			$data["post_data"] = $data;
-			
-			//echo "select * from listing,seller where ".$where.$order_by." limit $lFrom,$lTo";
-
-			$data["listing_list"] = $this->db->query("select * from listing,seller where ".$where.$order_by." limit $lFrom,$lTo")->result();
-			
-			//$this->db->select('*');
-//			$this->db->from('listing');
-//			$this->db->join("seller","listing.listing_seller=seller.seller_id");
-//			if(!empty($data["listing_id"]))
-//			{				
-//				$this->db->where("listing.listing_id",$data["listing_id"]);
-//			}
-//			
-//			if(!empty($data["listing_status_keywords"]))
-//			{				
-//				$this->db->like("listing.listing_status_keywords",$data["listing_id"],'both');
-//			}
-//
-//			if(!empty($data["listing_sector"])){				
-//				$this->db->like("listing.listing_category_path",$data["listing_sector"],'both');			
-//				if(!empty($data["listing_category_1"])){					
-//					$this->db->like("listing.listing_category_path",$data["listing_category_1"],'both');					
-//				}
-//			}
-//			
-//			
-//			
-//			if(!empty($data["listing_location_path"])){		
-//				foreach($data["listing_location_path"] as $k=>$listing_location_path){					
-//					$this->db->or_like("listing.listing_location_path",$listing_location_path,'right');
-//				}
-//			}
-//			
-//			if(!empty($data["listing_zip"]))
-//			{
-//				$this->db->where("listing.listing_zip",$data["listing_zip"]);
-//			}
-//			
-//			if(!empty($data["s_status"]))
-//			{
-//				$this->db->where("listing.listing_status",$data["s_status"]);
-//			}
-//			
-//			if(!empty($data["s_featured"]))
-//			{
-//				$this->db->where("listing.listing_status_feature",$data["s_featured"]);
-//			}
-//			
-//			if(!empty($data["listing_status_new"]))
-//			{
-//				$this->db->where("listing.listing_status_new",$data["listing_status_new"]);
-//			}
-//			
-//			if(!empty($data["listing_seller_id"]))
-//			{
-//				$this->db->like("seller.seller_username",$data["listing_status_new"],'right');
-//			}
-//
-//			switch($data["s_order"])
-//			{				
-//				case "expire":
-//					$this->db->order_by('listing.listing_expire',"desc");
-//				break;
-//				case "status":
-//					$this->db->order_by('listing.listing_status',"asc");
-//				break;
-//				case "seller":
-//					$this->db->order_by('listing.seller_firstname',"asc");
-//				break;
-//				default:
-//					$this->db->order_by('listing.listing_id',"desc");
-//				break;
-//			}
-//						
-//			//$this->db->limit($lFrom,$lTo);
-//			$data["listing_list"] = $this->db->limit($lTo,$lFrom)->get()->result();
-//			echo $this->db->last_query();
-
-			$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-
-			return $data;
-		}
-
-		catch(Exception $e)
-		{
-			return $e->getMessage();
-		}		
-	}
-
-	//get review of listing
-
-	public function get_review_list($count=false,$listing_id=0)
-
-	{
-
-		if($count)
-
-		{
-
-			return $this->db->get_where("visitor_comment",array("comment_type"=>"listing","comment_linkid"=>$listing_id))->num_rows();
-
-		}
-
-		else
-
-		{
-
-			return $this->db->select("*")->from("visitor_comment")->where(array("comment_type"=>"listing","comment_linkid"=>$listing_id))->join('visitor', 'visitor_comment.comment_visitor = visitor.visitor_id')->get()->result();
-
-			//return $this->db->join('visitor', 'visitor_comment.comment_visitor = visitor.visitor_id')->get_where("visitor_comment",)->result();
-
-		}
-
-	}
-
-	//get review of listing
-
-	public function get_review_detail($comment_id=0)
-
-	{
-
-		$detail =  $this->db->select("*")->from("visitor_comment")->where(array("comment_id"=>$comment_id))->join('visitor', 'visitor_comment.comment_visitor = visitor.visitor_id')->get()->result();
-
-		foreach($detail as $k=>$obj){return $obj;}
-
-	}
-	
-	public function get_comment_list($listing_id)
-	{
-		return $this->db->get_where("visitor_comment",array("comment_linkid"=>$listing_id))->result();
-	}
-	public function update_review()
-
-	{
-
-		try
-
-		{
-
-			$data =array(
-
-				"comment_rating"=>$this->input->post("comment_rating"),
-
-				"comment_ipaddress"=>$this->input->post("comment_ipaddress"),
-
-				"comment_title"=>$this->input->post("comment_title"),
-
-				"comment_description"=>$this->input->post("comment_description")
-
-			);
-
-			$this->db->where("comment_id",$this->input->post("comment_id"));
-
-			$this->db->update("visitor_comment",$data);
-
-			throw new Exception("One record has Updated...");
-
-		}
-
-		catch(Exception $e)
-
-		{
-
-			return $e->getMessage();
-
-		}
-
-	}
-
-	//get visitor 
-
-	public function get_visitor($visitor_id=0)
-
-	{
-
-		$detail = $this->db->get_where("visitor",array("visitor_id"=>$visitor_id))->result();
-
-		foreach($detail as $k=>$obj){return $obj;}
-
-	}
-
-	//delete review
-
-	public function delete_review($data)
-
-	{
-
-		try
-
-		{
-
-			if($this->db->get_where("visitor_comment",$data)->num_rows()>0)
-
-			{
-
-				$this->db->delete("visitor_comment",$data);
-
-				throw new Exception("One record has Deleted...");
-
-			}
-
-			else
-
-			{
-
-				throw new Exception("Record Not Found...");
-
-			}
-
-		}
-
-		catch(Exception $e)
-
-		{
-
-			return $e->getMessage();
-
-		}
-
-	}
-
-	public function search_visitors($data,$startpage,$limit)
-
-	{
-
-		try
-
-		{
-
-			$query = $this->db->select("*")->from("visitor");			
-
-			if(!empty($data["visitor_username"])){$query = $query->like("visitor_username",$data["visitor_username"]);}	
-
-			if(!empty($data["visitor_firstname"])){$query = $query->like("visitor_firstname",$data["visitor_firstname"]);}			
-
-			if(!empty($data["visitor_lastname"])){$query = $query->like("visitor_lastname",$data["visitor_lastname"]);}
-
-			
-
-			$rec = ceil($this->db->get()->num_rows()/$limit);
-
-			//re using query for fetching records
-
-			$query = $this->db->select("*")->from("visitor");			
-
-			if(!empty($data["visitor_username"])){$query = $query->like("visitor_username",$data["visitor_username"]);}	
-
-			if(!empty($data["visitor_firstname"])){$query = $query->like("visitor_firstname",$data["visitor_firstname"]);}			
-
-			if(!empty($data["visitor_lastname"])){$query = $query->like("visitor_lastname",$data["visitor_lastname"]);}
-
-			
-
-			$query = $query->order_by("visitor_id",'desc');
-
-			
-
-			$lTo = $limit;
-
-			
-
-			if($startpage<1){$startpage=1;}
-
-			if($startpage>$rec){$startpage = $rec;}
-
-			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-
-			else{$lFrom = 0;} 				
-
-			
-
-			$query->limit($lTo,$lFrom);				
-
-
-
-			$data["visitor_list"] = $this->db->get()->result();
-
-			$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-
-			
-
-			throw new Exception("Records Found...");
-
-		}
-
-		catch(Exception $e)
-
-		{
-
-			$data["success_msg"] = $e->getMessage();
-
-		}
-
-		return $data;		
-
-	}
-
-	public function nadd_new_review()
-
-	{
-
-		try
-
-		{
-
-			$data = array(
-
-				"comment_linkid"=>$this->input->post("comment_linkid"),
-
-				"comment_visitor"=>$this->input->post("comment_visitor"),
-
-				"comment_rating"=>$this->input->post("comment_rating"),
-
-				"comment_ipaddress"=>$this->input->post("comment_ipaddress"),
-
-				"comment_title"=>$this->input->post("comment_title"),
-
-				"comment_description"=>$this->input->post("comment_description"),
-
-				"comment_type"=>"listing",
-
-				"comment_language"=>$this->input->post("comment_language"),
-
-				"comment_lastupdate"=>date("Y-m-d H:i:s"),
-
-				"comment_status"=>"approved"
-
-			);
-
-			$this->db->insert("visitor_comment",$data);
-
-			throw new Exception("One Review Added...");
-
-		}
-
-		catch(Exception $e)
-
-		{
-
-			$data["success_msg"] = $e->getMessage();
-
-		}
-
-	}
-
-	//get active country list
-
-	public function get_active_country()
-
-	{
-
-		return $this->db->get_where("setup_location",array("location_parent"=>0))->result();
-
-	}
-
-	//get location list
-
-	public function get_location_list($data)
-
-	{
-		return $this->db->where($data)->order_by("location_name","ASC")->get("setup_location")->result();		
-		//return $this->db->get_where("setup_location",$data)->order_by("location_name","ASC")->result();
-
-	}
-	
-	
-
-	public function get_openstatus()
-
-	{
-
-		return $this->db->get("setup_openstatus")->result();
-
-	}
-
-	//get open status list
-
-	public function get_openhour()
-
-	{
-
-		return $this->db->get("setup_openhour")->result();
-
-	}
-
-	//get Insured list
-
-	public function get_insured_list()
-
-	{
-
-		return $this->db->get("setup_dropdown1")->result();
-
-	}
-
-	//get Prime category
-
-	public function get_prime_category($data)
-
-	{
-
-		$detail = $this->db->get_where("setup_category_listing",$data)->result();
-
-		foreach($detail as $k=>$obj){return $obj;}
-
-	}
-
-	//get Bonded list
-
-	public function get_bonded_list()
-
-	{
-
-		return $this->db->get("setup_dropdown2")->result();
-
-	}
-
-	//get related listing comment rating
-
-	public function get_listing_rating($data)
-
-	{
-
-		$detail = $this->db->select("*")->select_max('comment_rating')->where("comment_linkid",$data["listing_id"])->limit(0,1)->get("visitor_comment")->result();
-
-		foreach($detail as $k=>$obj){ return $obj;}
-
-	}
-
-	//get related listing single main photo by default view
-
-	public function get_listing_main_photo($data)
-
-	{		
-
-		$detail = $this->db->select("*")->where(array("photo_listing"=>$data["listing_id"],"photo_status_main"=>$data["photo_status_main"]))->get("listing_photo")->result();
-
-		foreach($detail as $k=>$obj){ return $obj;}
-
-	}
-
-	public function get_listing_package($data)
-
-	{
-
-		$detail = $this->db->select("*")->where(array("package_listing_id"=>$data["listing_package"]))->get("setup_package_listing")->result();
-
-		foreach($detail as $k=>$obj){ return $obj;}
-
-	}
-
-	public function get_seller_package($data)
-
-	{
-
-		$detail = $this->db->select("*")->where(array("package_subscription_id"=>$data["seller_package"]))->get("setup_package_subscription")->result();
-
-		foreach($detail as $k=>$obj){ return $obj;}
-
-	}
-
-	//get related listing visited status
-
-	public function get_listing_visited($data)
-
-	{
-
-		$counter=0;
-
-		$detail = $this->db->get_where("listing_stat",$data)->result();
-
-		foreach($detail as $k=>$obj){$counter += $obj->stat_total;}
-
-		return $counter;
-
-	}
-	public function get_listing_mailed($data)
-	{
-		return $this->db->get_where("visitor_comment",$data)->result();
-	}
-
-	//listing statistics
-
-	public function listing_statistics($data)
-	{
-		return $this->db->get_where("listing_stat",$data)->result();				
-	}
-
-	//get related listing Favourited status
-
-	public function get_listing_favourited($data)
-
-	{
-
-		return $this->db->get_where("visitor_favourite",$data)->result();
-
-	}
-
-	public function select_listing($data)
-
-	{
-
-		try
-
-		{
-
-			if($this->db->get_where("listing",$data)->num_rows()>0)
-
-			{
-
-				$this->db->select("*")->from("listing")->where($data)->join('seller', 'listing.listing_seller = seller.seller_id');
-
-				return $this->db->get()->result();
-
-			}
-
-			else
-
-			{
-
+			else{
+				$data["pages"] = array();
+				$data["pagination"] = array("startpage"=>0,"pages"=>0);
 				throw new Exception("No record found...");
-
 			}
-
 		}
-
-		catch(Exception $e)
-
-		{
-
-			return $e->getMessage();
-
-		}	
-
+		catch(Exception $e)	{
+			$data['msg']= $e->getMessage();
+		}
+		return $data;
 	}
+	
+	
+	public function select_page($data){
+		try{
 
-	public function update_listing($data)
+			if($this->db->get_where("wp_posts",$data)->num_rows()>0){
+				$this->db->select("*")->from("wp_posts")->where($data);
+				$result = $this->db->get()->result();
+				$page = (array) $result[0];
+
+				//getting page meta tag
+				$result = $this->db->select("*")->from("wp_postmeta")->where(array("post_id"=>$page['ID']))->get()->result();
+				foreach($result as $postmeta){
+					$page[$postmeta->meta_key] = $postmeta->meta_value;
+				}
+				
+				$result = (object) $page;
+				return $result;
+			}else{
+				throw new Exception("No record found...");
+			}
+		}catch(Exception $e){
+			return $e->getMessage();
+		}
+	}
+	public function update_page($data)
 	{
 		try
 		{	
-			if($this->db->get_where("listing",array("listing_id"=>$this->input->post("listing_id")))->num_rows()>0)
-			{
-				$this->db->where('photo_listing', $this->input->post("listing_id"));
-				$res = $this->db->get("listing_photo")->result();
-				
-				foreach($res as $obj){
-					$photoobj = $obj;				
-				}
-				
-				if(!empty($_FILES["photo_file_1"]["name"])){
-					@unlink("./photo_big/".$this->input->post("listing_image"));
-					@unlink("./photo_medium/".$this->input->post("listing_image"));
-					@unlink("./photo_small/".$this->input->post("listing_image"));
-				}
-				$this->db->where('listing_id', $this->input->post("listing_id"));
-				
-				$this->db->update('listing', $data);
-				
-				//$this->db->where('category_listing',$this->input->post("listing_id"))->delete("listing_category");
-//				$category_list_array = $this->input->post("listing_category");
-//				foreach($category_list_array as $category_id){
-//				
-//					$this->db->insert("listing_category",array("category_listing"=>$this->input->post("listing_id"),"category_value"=>$category_id,"category_path"=>"-$category_id-","category_status"=>"approved"));
-//				}				
-			
-			if(!empty($_FILES["photo_file_1"]["name"])){
-				$photo_name = explode(".",$this->input->post("listing_image"));
-				$this->new_listing_photo_upload($photo_name[0],"photo_file_1");
-			}
-				throw new Exception("One record has Updated...");
-
-			}
-
-			else
-
-			{
-
+			if($this->db->get_where("wp_posts",array("ID"=>$this->input->post("post_id")))->num_rows()>0){
+				$this->db->where("ID",$this->input->post("post_id"))->update('wp_posts', $data['post']);
+				if(count($data['post_meta'])>0){
+					foreach($data['post_meta'] as $metakey=>$metavalue){
+						if($this->db->get_where("wp_postmeta",array("post_id"=>$this->input->post("post_id"),"meta_key"=>$metakey))->num_rows()>0){
+							$this->db->where(array("post_id"=>$this->input->post("post_id"),"meta_key"=>$metakey))->update('wp_postmeta', array("meta_value"=>$metavalue));
+						}else{
+							$this->db->insert("wp_postmeta",array(
+								"post_id"=>$this->input->post("post_id"),
+								"meta_key"=>$metakey,
+								"meta_value"=>$metavalue
+							));
+						}
+					}	
+				}else{
+					throw new Exception("One record has Updated...");
+				}		
+			}else{
 				throw new Exception("No record found to Update...");
+			}
+		}catch(Exception $e){
+			return $e->getMessage();
+		}
+	}
 
+	public function create($data){
+		try{
+			$this->db->insert("wp_posts",array(
+				"post_title"=>$data->post_title,
+				"post_content"=>$data->post_content,
+				"post_name"=>$data->post_name,
+				"post_status"=>"publish",
+				"post_date"=>date("Y-m-d H:i:s"),
+				"post_date_gmt"=>date("Y-m-d H:i:s"),
+				"post_modified"=>date("Y-m-d H:i:s"),
+				"post_modified_gmt"=>date("Y-m-d H:i:s"),
+				"comment_status"=>"closed",
+				"ping_status"=>"closed",
+				"post_type"=>"page",
+				"post_author"=>"1",	
+			));
+
+			$data->post_id =  $this->db->insert_id();
+
+			$this->db->insert("wp_postmeta",array(
+				"post_id"=>$data->post_id,
+				"meta_key"=>'page_keywords',
+				"meta_value"=>$data->page_keywords
+			));
+			$this->db->insert("wp_postmeta",array(
+				"post_id"=>$data->post_id,
+				"meta_key"=>'page_meta_description',
+				"meta_value"=>$data->page_meta_description
+			));
+			$data = array(
+				'status'=>true,
+				'msg'=>'Page Created',
+				'post'=>$data	
+			);
+		}catch(Exception $e){
+			$data = array(
+				'status'=>false,
+				'msg'=>$e->getMessage()
+			);
+		}
+		return $data;
+	}
+	public function get_menus($id=0){
+		
+		if($id<=0){
+			$result = $this->db->select("wpt.term_id,wpt.name,wptt.taxonomy,wptt.count,wptt.term_taxonomy_id,wptt.count")
+			->from("wp_term_taxonomy wptt")
+			->join("wp_terms wpt","wpt.term_id=wptt.term_id","left")
+
+			/*
+			->join("wp_term_relationships wptr","wptt.term_taxonomy_id=wptr.term_taxonomy_id","left")
+			->join("wp_posts wpp","wpp.ID=wptr.object_id","left")
+			*/
+			->where(array("wptt.taxonomy"=>"nav_menu"))
+			->get()->result();
+			$data["menus"] = $result;
+			$data["pagination"] = array("startpage"=>0,"menus"=>0);
+
+			return $data;
+		}else{
+			$result = $this->db->select("wptt.term_taxonomy_id,wpt.name,wptt.description,wptt.count,wpt.term_id")
+			->from("wp_terms wpt")
+			->join("wp_term_taxonomy wptt",'wptt.term_id=wpt.term_id',"left")
+			->where("wpt.term_id",$id)
+			->get()->result();
+			foreach($result as $menuObj){
+				$data['menu'] = (array) $menuObj;
 			}
 
-		}
-
-		catch(Exception $e)
-
-		{
-
-			return $e->getMessage();
-
-		}
-
-	}
-	public function add_new_listing($data,$catg)
-	{
-		try
-
-		{
-			
-			$this->db->insert("seller",array("seller_username"=>$this->input->post("listing_seller"),"seller_country"=>$this->input->post("listing_location_1"),"seller_status"=>"approved","seller_status_feature"=>"featured","seller_status_email"=>"approved","seller_status_approval"=>"on"));
-			$data['listing_seller'] =  $this->db->insert_id();
-			$this->db->insert("listing",$data);
-			$data["id"] = $this->db->insert_id();
-				$listing_category_array = $this->input->post("listing_category");
-				$temp_array = $listing_category_array;
-				foreach($listing_category_array as $k=>$val){
-					$this->db->insert("listing_category",array("category_listing"=>$data["id"],"category_value"=>$val,"category_path"=>"-".$val."-","category_status"=>"approved"));
+			$result = $this->db->select(
+				"wptr.object_id,wptr.term_taxonomy_id,
+				wpp.menu_order,wpp.post_name,wpp.post_title,
+				wppm.meta_value as _menu_item_object_id,
+				wppm1.meta_value as _menu_item_menu_item_parent,
+				wppm2.meta_value as _menu_item_object,
+				wpp1.post_title as menu_title,
+				wpp1.post_name as menu_name,
+				wpp.ID as post_id
+				")->from("wp_term_relationships wptr")
+			->join("wp_posts wpp",'wpp.ID=wptr.object_id AND wpp.post_type="nav_menu_item"',"left")
+			->join("wp_postmeta wppm",'wppm.post_id=wpp.ID AND wppm.meta_key="_menu_item_object_id"',"left")
+			->join("wp_postmeta wppm1",'wppm1.post_id=wpp.ID AND wppm1.meta_key="_menu_item_menu_item_parent"',"left")
+			->join("wp_postmeta wppm2",'wppm2.post_id=wpp.ID AND wppm2.meta_key="_menu_item_object"',"left")
+			->join("wp_posts wpp1",'wpp1.ID=wppm.meta_value',"left")
+			->where(array("wptr.term_taxonomy_id"=>$data['menu']["term_taxonomy_id"]))
+			->order_by("wpp.menu_order","ASC")
+			->get()->result();
+			$menus = array();
+			$count=0;
+			foreach($result as $k=>$menu){
+				if($menu->_menu_item_menu_item_parent<=0){
+					$menus[$menu->object_id] = array(						
+						"menu_name"=>$menu->menu_name,
+						"menu_title"=>$menu->menu_title,
+						"term_taxonomy_id"=>$menu->term_taxonomy_id,
+						"menu_id"=> $menu->post_id,
+					);
+					$count++;
 				}
+			}
+
+			$submenus = array();
+			if($count<count($result)){
+				foreach($result as $k=>$menu){
+					if($menu->_menu_item_menu_item_parent>0){
+						if(isset($menus[$menu->_menu_item_menu_item_parent])){
+							$menus[$menu->_menu_item_menu_item_parent]["submenu"][] = array(						
+								"menu_name"=>$menu->menu_name,
+								"menu_title"=>$menu->menu_title,
+								"term_taxonomy_id"=>$menu->term_taxonomy_id,
+								"menu_id"=> $menu->post_id,
+							);
+							$count++;
+						}
+					}
+				}
+			}
+
+
+			$data["menu"]["menus"] = $menus;
 			
-
-			
-			//$photo_data = array("photo_listing"=>$data["id"],"photo_caption_1"=>$this->input->post("photo_caption_1"),"photo_status"=>"approved","photo_status_main"=>"main","photo_lastupdate"=>date("Y-m-d H:i:s"));
-
-			//$this->db->insert("listing_photo",$photo_data);
-			//$this->new_listing_photo_upload($this->db->insert_id(),"photo_file_1");
-			//for($i=1;$i<=$catg;$i++)
-//
-//			{
-//
-//				$this->db->insert("listing_categort",$catg);
-//
-//			}
-
-
-
-			throw new Exception("New user has been added sucessfully...");		
-
+			return $data;
 		}
+	}
+	public function get_all_pages(){
+		return $this->db->get_where('wp_posts',array("post_type"=>"page","post_status"=>"publish"))->result();
+	}
+	public function add_new_menu_item($data){
+		
+		$this->db->insert('wp_posts',array(
+			'post_type'=>'nav_menu_item',
+			'post_status'=>'publish',
+			'menu_order'=>$data['count'],
+			'comment_status'=>'closed',
+			'ping_status'=>'closed',
+			'post_title'=>data['post_title'],
+			"post_date"=>date("Y-m-d H:i:s"),
+			"post_date_gmt"=>date("Y-m-d H:i:s"),
+			"post_modified"=>date("Y-m-d H:i:s"),
+			"post_modified_gmt"=>date("Y-m-d H:i:s"),
+			'guid'=>$data['guid'],
+			'post_author'=>1,
+		));
+		$post_id = $this->db->insert_id();
+		
+		$this->db->insert('wp_postmeta',array(
+			'post_id' => $post_id,
+			'meta_key'=>'_menu_item_menu_item_parent',
+			'meta_value'=>$data['_menu_item_menu_item_parent']
+		));
+		$this->db->insert('wp_postmeta',array(
+			'post_id' => $post_id,
+			'meta_key'=>'_menu_item_object_id',
+			'meta_value'=>$data['_menu_item_object_id']
+		));
+		$this->db->insert('wp_postmeta',array(
+			'post_id' => $post_id,
+			'meta_key'=>'_menu_item_object',
+			'meta_value'=>'page'
+		));
+		$this->db->where("ID",$post_id)->update('wp_posts',array('post_name'=>$post_id));
+		
 
-		catch(Exception $e)
+		$result = $this->db->insert('wp_term_relationships',array(
+			'object_id'=>$post_id,
+			'term_taxonomy_id'=>$data['term_taxonomy_id'],
+			'term_order'=>0
+		));
+		
+		$this->db->where('term_taxonomy_id',$data['term_taxonomy_id'])->update('wp_term_taxonomy',array('count'=>$data['count']));
+		
+		return $post_id;
+	}
 
-		{
+	public function get_menu_item_details($id){
 
-			$data["msg"] = $e->getMessage();
+		$result = $this->db->select(
+				"wptr.object_id,wptr.term_taxonomy_id,
+				wpp.menu_order,wpp.post_name as menu_name,wpp.post_title as menu_title,
+				wppm.meta_value as _menu_item_object_id,
+				wppm1.meta_value as _menu_item_menu_item_parent,
+				wppm2.meta_value as _menu_item_object,
+				wpp1.post_title as post_title,
+				wpp1.post_name as post_name,
+				wpp.ID as menu_id
+				")->from("wp_term_relationships wptr")
+			->join("wp_posts wpp",'wpp.ID=wptr.object_id AND wpp.post_type="nav_menu_item"',"left")
+			->join("wp_postmeta wppm",'wppm.post_id=wpp.ID AND wppm.meta_key="_menu_item_object_id"',"left")
+			->join("wp_postmeta wppm1",'wppm1.post_id=wpp.ID AND wppm1.meta_key="_menu_item_menu_item_parent"',"left")
+			->join("wp_postmeta wppm2",'wppm2.post_id=wpp.ID AND wppm2.meta_key="_menu_item_object"',"left")
+			->join("wp_posts wpp1",'wpp1.ID=wppm.meta_value',"left")
+			->where(array("wptr.object_id"=>$id))
+			->get()->result();
 
+		return $result;
+	}
+	public function update_menu_item($data){
+		$result = $this->db->select('wpp.ID as menu_id,wppm.meta_value as _menu_item_menu_item_parent')->from('wp_posts wpp')
+		->join('wp_postmeta wppm','wppm.post_id=wpp.ID AND wppm.meta_key="_menu_item_menu_item_parent" AND wppm.meta_value="'.$data['_menu_item_menu_item_parent'].'"','left')
+		->where('wpp.ID',$data['menu_id'])->get()->result();
+		$row =  $result[0];
+		if($row->_menu_item_menu_item_parent==null){
+			$result1 = $this->db->where(array('meta_key'=>'_menu_item_menu_item_parent',"meta_value"=>$data['menu_id']))->update('wp_postmeta',array(
+				'meta_value'=>0,
+			))->get()->result();
+			$result2 = $this->db->where(array('ID'=>$data['menu_id']))->update('wp_posts',array('post_title'=>$data['post_title']));
+			return array($result1,$result2);
+
+		}else{
+			$result = $this->db->where(array('ID'=>$data['menu_id']))->update('wp_posts',array('post_title'=>$data['post_title']));
+			return $result;
 		}
-
-		return $data;		
-
 	}
-	public function add_listing_wp($title)
-	{
-		$slogan = str_replace(" ","-",$title);
-		$this->db->insert("wp_posts",array("post_author"=>1,"post_data"=>date("Y-m-d H:s:i"),"post_content"=>"[]"));
+	public function delete_menu_item($data){
+		$result1 = $this->db->where('term_taxonomy_id',$data['term_taxonomy_id'])->update('wp_term_taxonomy',array("count"=>$data['count']));
+		$result2 = $this->db->where('object_id',$data['object_id'])->delete('wp_term_relationships');
+		$result3 = $this->db->where('ID',$data['object_id'])->delete('wp_posts');
+		return array($result1,$result2,$result3);
 	}
-	public function feature($data)
 
-	{
 
-		try
 
-		{
 
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
 
-			{
 
-				$this->db->where('listing_id', $data["listing_id"]);		
 
+
+
+	public function feature($data){
+		try{
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
+				$this->db->where('listing_id', $data["listing_id"]);
 				$this->db->update('listing', array("listing_status_feature"=>$data["listing_status_feature"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
-
 				throw new Exception("Listing feature list updated...");
-
-			}
-
-			else
-
-			{
-
+			}else{
 				throw new Exception("Listing feature record not found...");
-
 			}
-
-		}
-
-		catch(Exception $e)
-
-		{
-
+		}catch(Exception $e){
 			return $e->getMessage();
-
 		}
-
 	}
 	
 	
-	public function status_new($data)
-
-	{
-
-		try
-
-		{
-
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
-
-			{
-
-				$this->db->where('listing_id', $data["listing_id"]);		
-
+	public function status_new($data){
+		try{
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
+				$this->db->where('listing_id', $data["listing_id"]);
 				$this->db->update('listing', array("listing_status_new"=>$data["listing_status_new"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
-
 				throw new Exception("Listing new list updated...");
-
-			}
-
-			else
-
-			{
-
+			}else{
 				throw new Exception("Listing new record not found...");
-
 			}
-
-		}
-
-		catch(Exception $e)
-
-		{
-
+		}catch(Exception $e){
 			return $e->getMessage();
-
 		}
-
 	}
 
 	public function auto_approve($data)

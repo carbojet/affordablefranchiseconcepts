@@ -48,13 +48,9 @@
       </a>
       <ul class="sub-menu">
         <li class="<?php if(!empty($sidemenu[9][2][1])){ echo $sidemenu[9][2][1];} ?>"><a href="<?php echo base_url("pages");?>">Pages</a></li>
-        <li class="<?php if(!empty($sidemenu[9][2][2])){ echo $sidemenu[9][2][2];} ?>"><a href="<?php echo base_url("pages/menu");?>">Menu</a></li>
+        <li class="<?php if(!empty($sidemenu[9][2][2])){ echo $sidemenu[9][2][2];} ?>"><a href="<?php echo base_url("pages/menus");?>">Menu List</a></li>
         <li class="<?php if(!empty($sidemenu[9][2][3])){ echo $sidemenu[9][2][3];} ?>"><a href="<?php echo base_url("pages/media");?>">Media</a></li>
-        <li class="<?php if(!empty($sidemenu[9][2][4])){ echo $sidemenu[9][2][4];} ?>"><a href="<?php echo base_url("pages/header");?>">Header</a></li>
-        <li class="<?php if(!empty($sidemenu[9][2][5])){ echo $sidemenu[9][2][5];} ?>"><a href="<?php echo base_url("pages/footer");?>">Footer</a></li>
-        <li class="<?php if(!empty($sidemenu[9][2][6])){ echo $sidemenu[9][2][6];} ?>"><a href="<?php echo base_url("pages/Slider");?>">Slider</a></li>
         <li class="<?php if(!empty($sidemenu[9][2][7])){ echo $sidemenu[9][2][7];} ?>"><a href="<?php echo base_url("pages/testimonials");?>">Testimonials</a></li>
-        <li class="<?php if(!empty($sidemenu[9][2][8])){ echo $sidemenu[9][2][8];} ?>"><a href="<?php echo base_url("pages/settings");?>">Settings</a></li>
       </ul>
     </li>
     <!-- menu : listing -->

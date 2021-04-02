@@ -215,6 +215,26 @@ input[type=checkbox] {
                     <input type="text" name="listing_title_1" value="<?php echo $listingObj->listing_title_1; ?>" data-required="1" class="span6 m-wrap" style="">
                   </div>
                 </div>
+
+                <div class="control-group form_field">
+                  <label class="control-label"> Slug <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_slug" value="<?php echo $listingObj->listing_slug; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+                <div class="control-group form_field">
+                  <label class="control-label"> Keywords <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_keywords" value="<?php echo $listingObj->listing_keywords; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+                <div class="control-group form_field">
+                  <label class="control-label"> Meta Description <span class="required">*</span> </label>
+                  <div class="controls">
+                    <input type="text" name="listing_meta_description" value="<?php echo $listingObj->listing_meta_description; ?>" data-required="1" class="span10 m-wrap" style="">
+                  </div>
+                </div>
+
                 <div class="control-group" style="margin-top:50px">
                   <label class="control-label"></label>
                   <div class="controls">
@@ -536,10 +556,6 @@ input[type=checkbox] {
 
 							listing_location_1:						{ required: true },
 
-							//listing_address:						{ required: true },
-
-							//listing_zip:							{ required: true },
-
 							listing_posted_latitude:				{ number: true },
 
 							listing_posted_longitude:				{ number: true },
@@ -550,39 +566,10 @@ input[type=checkbox] {
 
 							listing_email: 							{ required: true, email: true },
 
-							//listing_website:						{ url: true },
-
-							
-
-							//listing_dropdown1:					{ required: true },
-
-							//listing_dropdown2:					{ required: true },
-
-							//listing_dropdown3:					{ required: true },
-
-							//listing_dropdown4:					{ required: true },
-
-							//listing_dropdown5:					{ required: true },
-
-							
-
-							//listing_radio1:						{ required: true },
-
-							//listing_radio2:						{ required: true },
-
-							//listing_radio3:						{ required: true },
-
-							//listing_radio4:						{ required: true },
-
-							//listing_radio5:						{ required: true },
-
-
-
-														
-
-														
-
 							listing_title_1:		{ required: true },
+              listing_slug:		{ required: true },
+              listing_keywords:		{ required: true },
+              listing_meta_description:		{ required: true },
 
 							//listing_descbrief_1:	{ required: true },
 
@@ -610,19 +597,11 @@ input[type=checkbox] {
 
 						// custom messages for radio buttons and checkboxes
 
-						messages: {
-
-							
-
-														
+						messages: {														
 
 							listing_category_1:						{ required: "Please fill this field." },
 
 							listing_location_1:						{ required: "Please fill this field." },
-
-							//listing_address:						{ required: "Please fill this field." },
-
-							//listing_zip:							{ required: "Please fill this field." },
 
 							listing_posted_latitude:				{ number: "Please enter a number." },
 
@@ -634,39 +613,13 @@ input[type=checkbox] {
 
 							listing_email: 							{ required: "Please fill this field.", email: "Please enter a valid email address." },
 
-							//listing_website:						{ url: "Please enter a valid URL (with http://)" },
-
-							
-
-							//listing_dropdown1:					{ required: "Please fill this field." },
-
-							//listing_dropdown2:					{ required: "Please fill this field." },
-
-							//listing_dropdown3:					{ required: "Please fill this field." },
-
-							//listing_dropdown4:					{ required: "Please fill this field." },
-
-							//listing_dropdown5:					{ required: "Please fill this field." },
-
-							
-
-							//listing_radio1:						{ required: "Please fill this field." },
-
-							//listing_radio2:						{ required: "Please fill this field." },
-
-							//listing_radio3:						{ required: "Please fill this field." },
-
-							//listing_radio4:						{ required: "Please fill this field." },
-
-							//listing_radio5:						{ required: "Please fill this field." },
-
-
-
-							
 
 														
 
 							listing_title_1:		{ required: "Please fill this field." },
+              listing_slug:		    { required: "Please fill this field." },
+              listing_keywords:		{ required: "Please fill this field." },
+              listing_meta_description:		{ required: "Please fill this field." },
 
 							//listing_descbrief_1:	{ required: "Please fill this field." },
 
@@ -835,6 +788,17 @@ input[type=checkbox] {
 				
 			})
 			
+
+      /*
+      jQuery("body").on("change","input[name=post_title]",function(e){
+				
+				jQuery("input[name=post_name]").val(jQuery("input[name=post_title]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
+			})
+      */
+			jQuery("body").on("change","input[name=listing_slug]",function(e){
+				jQuery("input[name=listing_slug]").val(jQuery("input[name=listing_slug]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
+			})
+
 			jQuery("body").on("click","button[name=minusbutton]",function(){
 				
 				prevrow = jQuery(this).closest(".form_field").prev();

@@ -9,7 +9,16 @@
 	<meta charset="utf-8" />
 	<title>Affordable Busindess Concepts LLC </title>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<meta content="" name="description" />
+	<?php
+	$description = 'Affordable Business Concepts';
+	$keywords = 'Affordable Business Concepts';
+	//var_dump($pageObj);
+	?>
+	<?php if(isset($pageObj) && isset($pageObj->page_meta_description)){ $description = $pageObj->page_meta_description;} ?>
+	<?php if(isset($pageObj) && isset($pageObj->page_keywords)){ $keywords = $pageObj->page_keywords;} ?>
+	<meta content="<?php echo $description;?>" name="description" />
+	<meta content="<?php echo $keywords;?>" name="keywords" />
+	
 	
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
 	<link href="<?php echo base_url("theme");?>/frontend/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>

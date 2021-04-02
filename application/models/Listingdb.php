@@ -966,85 +966,31 @@ return "$city, $state, $country";
 		$slogan = str_replace(" ","-",$title);
 		$this->db->insert("wp_posts",array("post_author"=>1,"post_data"=>date("Y-m-d H:s:i"),"post_content"=>"[]"));
 	}
-	public function feature($data)
-
-	{
-
-		try
-
-		{
-
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
-
-			{
-
+	public function feature($data){
+		try{
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
 				$this->db->where('listing_id', $data["listing_id"]);		
-
 				$this->db->update('listing', array("listing_status_feature"=>$data["listing_status_feature"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
-
 				throw new Exception("Listing feature list updated...");
-
-			}
-
-			else
-
-			{
-
+			}else{
 				throw new Exception("Listing feature record not found...");
-
 			}
-
-		}
-
-		catch(Exception $e)
-
-		{
-
+		}catch(Exception $e){
 			return $e->getMessage();
-
 		}
-
-	}
-	
-	
-	public function status_new($data)
-
-	{
-
-		try
-
-		{
-
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
-
-			{
-
+	}	
+	public function status_new($data){
+		try{
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
 				$this->db->where('listing_id', $data["listing_id"]);		
-
 				$this->db->update('listing', array("listing_status_new"=>$data["listing_status_new"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
-
 				throw new Exception("Listing new list updated...");
-
-			}
-
-			else
-
-			{
-
+			}else{
 				throw new Exception("Listing new record not found...");
-
 			}
-
-		}
-
-		catch(Exception $e)
-
-		{
-
+		}catch(Exception $e){
 			return $e->getMessage();
-
 		}
-
 	}
 
 	public function auto_approve($data)

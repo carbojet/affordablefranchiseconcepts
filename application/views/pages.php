@@ -110,7 +110,7 @@ margin-left:170px !important;
 
                 <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
                 if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
-                <div dir="ltr"> <a href="<?php echo base_url("pages/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
+                <div dir="ltr"> <a href="<?php echo base_url("pages/preview/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/next/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
               </div>
             </div>
             <div style="clear:both"></div>
@@ -126,7 +126,7 @@ margin-left:170px !important;
                     <div class="btn-group">
                       <button class="btn red dropdown-toggle" data-toggle="dropdown">Add New <i class="icon-angle-down"></i></button>
                       <ul class="dropdown-menu pull-right">
-                        <li><a href="<?php echo base_url("pages/new_page/"); ?>"><i class="icon-plus"></i> Add New </a></li>
+                        <li><a href="<?php echo base_url("pages/addnew/"); ?>"><i class="icon-plus"></i> Add New </a></li>
                         <li><a href="#" onClick="confirm_delete_all();"><i class="icon-trash"></i> Delete All </a></li>
                         <li><a href="#" class="delete_selected"><i class="icon-trash"></i>Delete Selected</a></li>
                       </ul>
@@ -174,7 +174,7 @@ margin-left:170px !important;
                                 <li><a href="<?php echo base_url("pages/edit/".$page->ID."/".$pagination["currentpage"]);?>"><i class="icon-edit"></i> Edit </a></li>
                                 <li><a onClick="confirm_delete('<?php echo $page->ID;?>','# <?php echo $page->ID;?>','<?php echo $pagination["startpage"];?>')" style="cursor:pointer"><i class="icon-trash"></i> Delete </a></li>
                                 <li><a href="<?php echo base_url("pages/listing_statistics/".$page->ID); ?>"><i class="icon-bar-chart"></i> Statistics </a></li>
-                                <li><a href="<?php echo base_url("../?listing_id=".$page->ID); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
+                                <li><a href="<?php echo base_url($page->post_name); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
                               </ul>
                             </div>
                           </td>
