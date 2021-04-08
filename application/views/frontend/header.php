@@ -71,180 +71,11 @@
 		</div>
 	</div>
 
-	<!-- Request Free Phone Consultation Modal -->
-
-	<div id="myModal1" class="modal fade" role="dialog">
-
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-
-			<div class="modal-content req-free-phone">
-
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">×</button>
-					<h4 class="modal-title">Request Free Phone Consultation</h4>
-				</div>
-
-				<div class="modal-body">
-					<form action="<?php echo base_url(); ?>/visitor/request_free_phone_consult/" method="post" enctype="application/x-www-form-urlencoded" class="custom-forms">
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<strong>The more information you provide the better we can match businesses to you</strong>                              
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-								<div class="form-group">
-									<label class="control-label"></label>
-									<select name="title" class="form-control" tabindex="0">
-										<option value="Mr">Mr</option>
-										<option value="Mrs">Mrs</option>
-										<option value="Ms">Ms</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"></div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">First Name <span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_first_name" class="form-control required" required="" tabindex="0">
-								</div>                               
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Last Name <span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_last_name" class="form-control required" required="" tabindex="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Email <span style="color:#ff0000;">*</span></label>
-									<input type="email" name="visitor_email" class="form-control required" required="" pattern="^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" tabindex="0"> 
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Phone <span style="color:#ff0000;">*</span></label>
-									<input type="tel" name="visitor_tel" class="form-control required" required="" pattern="^\d{3}-\d{3}-\d{4}$" tabindex="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Street Address Line One <span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_strt_add_one" class="form-control required" tabindex="0" required="">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Street Address Line Two</label>
-									<input type="text" name="visitor_strt_add_two" class="form-control" tabindex="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">City<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_city" class="form-control required" required="" tabindex="0">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">State or Province<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_st_pro" class="form-control required" required="" tabindex="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Country <span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_country" class="form-control required" tabindex="0" required="">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Zip or Postal Code<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_postal_code" id="rqst_free_phn_zip" class="form-control auto-num required zip-code" maxlength="7" required="" tabindex="0">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Capital Available to invest<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_capital_invest" class="form-control required auto" placeholder="$" tabindex="0" required="">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-								<label class="control-label">Estimated Net Worth<span style="color:#ff0000;">*</span></label>
-								<input type="text" name="visitor_est_nt_worth" class="form-control required auto" placeholder="$" tabindex="0" required="">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Purchase Time Frame<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_time_frame" class="form-control required purchase_time_frame" tabindex="0" required="">
-								</div>
-							</div>
-
-							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<div class="form-group">
-									<label class="control-label">Desired Location<span style="color:#ff0000;">*</span></label>
-									<input type="text" name="visitor_eesired_location" class="form-control required" tabindex="0" required="">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<label class="control-label">Additional Comments</label>
-								<textarea name="comments" rows="5" cols="40" class="form-control" tabindex="0"></textarea>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="form-group">
-									<label><input type="checkbox" name="chk1" checked="checked" value="I want to learn about using my (401K/IRA) funds to buy a business.">
-									I want to learn about using my (401K/IRA) funds to buy a business.</label>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="form-group">Affordable Business Concepts, LLC will call you for a free consultation.</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<label class="control-label">Security Check</label><br><span>please enter the text below</span>
-								<div class="form-group"><label class="control-label" style="-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;padding:3px 10px;background-color:#000000;color:#f4c730;font-size:25px;">dETBS </label><input type="text" name="captcha" size="4" maxlength="5" style="font-size:25px;" tabindex="0" required="" class=""><input type="hidden" name="captcha_validate" value="dETBS"></div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-								<div class="form-group"><input type="submit" name="submit" value="Send" onclick="rqst_free_phn_zip_validateZIP()"></div>
-							</div>
-						</div>
-					</form>
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-
 	<!-- Request Free Phone Consultation Modal End -->
+	<?php
+		echo $this->Chome->forms(array('form'=>"multiad"));
+	?>
+	
 
 	<div class="nav-menu">
 		<div class="container">
@@ -290,12 +121,12 @@
 													}
 												?>
 												<li class="<?php echo $submenuclass;?>">
-													<a title="<?php echo $submenuitem['menu_title'];?>" href="<?php echo $submenuitem['menu_name'];?>"><?php echo $submenuitem['menu_title'];?></a>
+													<a title="<?php echo $submenuitem['menu_title'];?>" href="<?php echo base_url().$submenuitem['menu_name'];?>"><?php echo $submenuitem['menu_title'];?></a>
 												</li>
 											<?php }?>
 										</ul>
 									<?php }else{?>
-										<a title="<?php echo $menuitem['menu_title'];?>" href="<?php echo $menuitem['menu_name'];?>">
+										<a title="<?php echo $menuitem['menu_title'];?>" href="<?php echo base_url().$menuitem['menu_name'];?>">
 											<?php echo $menuitem['menu_title'];?>
 										</a>
 									<?php }?>
@@ -311,5 +142,10 @@
 		</div>
 
 	</div>
+
 	<!-- #site-navigation -->
 </header>
+<div class="fixed-bar ci-mail-send" data-toggle="modal" data-target="#myModal-fixed">
+	<span class="count-ads"></span>
+	<img src="<?php echo base_url();?>theme/frontend/images/right-tab-button.png"/>
+</div>

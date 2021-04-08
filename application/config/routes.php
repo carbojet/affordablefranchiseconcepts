@@ -101,8 +101,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $route['default_controller'] = 'home';
-$route[''] = 'home';
+$route['login'] = 'login';
+$route['user'] = 'user';
+$route['dashboard'] = 'dashboard';
+$route['sitesetup'] = 'sitesetup'; 
+$route['general'] = 'general'; 
+$route['listing'] = 'listing'; 
+$route['visitor'] = 'visitor';
+$route['pages/next/(:any)'] = 'pages/next_page/$1';
+$route['pages'] = 'pages';
+$route['product/(:any)'] = 'home/product/$1';
+$route['(:any)'] = 'home/index/$1';
+
 
 $route['404_override'] = '';
 
 $route['translate_uri_dashes'] = FALSE;
+

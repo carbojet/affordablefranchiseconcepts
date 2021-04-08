@@ -97,8 +97,7 @@
                 <?php }?>
                 <div id="primary" class="content-area-wide container">
                     <?php
-                    $result = $this->Chome->getStringBetween($pageObj->post_content);
-                    echo $result;
+                        echo $this->Chome->getStringBetween($pageObj->post_content,$pageparams);
                     ?>
                 </div>
             </div>

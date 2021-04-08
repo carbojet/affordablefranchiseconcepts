@@ -196,7 +196,7 @@ input[type=checkbox] {
                                         <?php $category_lists = $this->Listingdb->get_category_list($sector_id); 
                                         foreach($category_lists as $k=>$category_listsObj){
                                         ?>
-                                        <option value="<?php echo $category_listsObj->category_id; ?>" <?php if($category_listsObj->category_id == $category_id){?>selected<?php } ?>><?php echo $category_listsObj->category_name_1; ?>			                        </option><?php } ?>                        
+                                          <option value="<?php echo $category_listsObj->category_id; ?>" <?php if($category_listsObj->category_id == $category_id){?>selected<?php } ?>><?php echo $category_listsObj->category_name_1; ?></option><?php } ?>                        
                                         </select>
                                     </div>
                                     
@@ -795,12 +795,23 @@ input[type=checkbox] {
 				jQuery("input[name=post_name]").val(jQuery("input[name=post_title]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
 			})
       */
-			jQuery("body").on("change","input[name=listing_slug]",function(e){
-				jQuery("input[name=listing_slug]").val(jQuery("input[name=listing_slug]").val().toString().replace(/\s/g, '-').replace(/'/g, '-'))
-			})
 
-			jQuery("body").on("click","button[name=minusbutton]",function(){
-				
+      jQuery('body').on("change","input[name=listing_title_1]",function(){
+        var slug = $(this).val().replace(/\s/g, '-').replace(/'/g, '-');
+        jQuery(".sec_cat").each(function(index,elem){
+          i = index+1;
+          if(jQuery(this).find("#listing_sector_"+i+' select').val()!==undefined){            
+            slug +='-'+jQuery(this).find("#listing_sector_"+i+' select option:selected').text().replace(/\s/g, '-')
+          }
+          if(jQuery(this).find("#listing_category_"+i+' select').val()!==undefined){
+            slug +='-'+jQuery(this).find("#listing_category_"+i+' select option:selected').text().replace(/\s/g, '-')
+          }
+        })
+        jQuery("input[name=listing_slug]").val(slug)
+      })
+
+
+			jQuery("body").on("click","button[name=minusbutton]",function(){				
 				prevrow = jQuery(this).closest(".form_field").prev();
 				prevrow.find(".add_div").append('<div class="span2 adbtn"><button type="button" name="addbutton" class="btn btn-default addButton"><i class="icon-plus"></i></button><button type="button" name="minusbutton" class="btn btn-default addButton"><i class="icon-minus"></i></button></div>');
 				if(len = jQuery("select.listing_sector").length>1){
@@ -908,7 +919,7 @@ input[type=checkbox] {
 
 						for(var key in data){
 
-						$("#listing_category_"+level).find("select").append('<option value="'+key+'">'+data[key]+'</option>')
+						$("#listing_category_"+level).find("select").append('<option value="'+key+'" >'+data[key]+'</option>')
 
 						}						
 

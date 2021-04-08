@@ -409,7 +409,7 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
                                 <li><a onClick="confirm_delete('<?php echo $listingObj->listing_id;?>','# <?php echo $listingObj->listing_id;?>','<?php echo $pagination["startpage"];?>')" style="cursor:pointer"><i class="icon-trash"></i> Delete </a></li>
                                 <li><a href="<?php echo base_url("listing/listing_statistics/".$listingObj->listing_id); ?>"><i class="icon-bar-chart"></i> Statistics </a></li>
                                 <?php /*?><li><a href="<?php echo base_url("listing/listing_reviews/".$listingObj->listing_id); ?>"><i class="icon-comments"></i> Reviews <font dir="ltr">(<?php echo $this->Listingdb->get_review_list(true,$listingObj->listing_id) ; ?>)</font></a></li><?php */?>
-                                <li><a href="<?php echo base_url("../product/?listing_id=".$listingObj->listing_id); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
+                                <li><a href="<?php echo base_url("product/".$listingObj->listing_slug); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
                                 <li>
                                   <?php if($listingObj->listing_status_feature=="featured"){ ?>
                                   <a href="<?php echo base_url("listing/feature/off/".$listingObj->listing_id."/".$pagination["currentpage"]); ?>"><i class="icon-star-empty"></i> Un-Feature </a>

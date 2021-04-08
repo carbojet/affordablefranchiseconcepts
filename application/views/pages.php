@@ -230,7 +230,7 @@ margin-left:170px !important;
 <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
 if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
 
-                <div dir="ltr"> <a href="<?php echo base_url("pages/listing_pre_page/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/listing_nxt_page/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
+                <div dir="ltr"> <a href="<?php echo base_url("pages/prev/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/next/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
               </div>
             </div>
             <div style="clear:both"></div>
