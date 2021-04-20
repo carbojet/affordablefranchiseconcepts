@@ -231,4 +231,70 @@ class Pages extends CI_Controller {
 		$result = $this->Pagesdb->delete_menu_item($data);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	public function media(){
+		if(!array_key_exists("ud",$this->session->userdata())){redirect("login");}
+
+		if(isset($this->data["page"])){$page = $this->data["page"];}
+		else{$page=1;}
+		$data = $this->Pagesdb->get_media_list($page,20);
+		$this->data["media"]= $data["media"];
+
+		if(isset($page)){$data["pagination"]["currentpage"]=$page;}
+		else{$data["pagination"]["currentpage"]=1;}
+
+		$this->data["pagination"] = $data["pagination"];
+		$this->pages = $this->data["pagination"]["pages"];
+
+		$this->load->view('media',$this->data);
+	}
+	public function media_next($id){
+		if(!array_key_exists("ud",$this->session->userdata())){redirect("login");}
+		$this->data['page'] = $id;
+		if(isset($this->data["page"])){$page = $this->data["page"];}
+		else{$page=1;}
+		$data = $this->Pagesdb->get_media_list($page,20);
+		$this->data["media"]= $data["media"];
+
+		if(isset($page)){$data["pagination"]["currentpage"]=$page;}
+		else{$data["pagination"]["currentpage"]=1;}
+
+		$this->data["pagination"] = $data["pagination"];
+		$this->pages = $this->data["pagination"]["pages"];
+
+		$this->load->view('media',$this->data);
+	}
+	public function media_prev($id){
+		if(!array_key_exists("ud",$this->session->userdata())){redirect("login");}
+		$this->data['page'] = $id;
+		if(isset($this->data["page"])){$page = $this->data["page"];}
+		else{$page=1;}
+		$data = $this->Pagesdb->get_media_list($page,20);
+		$this->data["media"]= $data["media"];
+
+		if(isset($page)){$data["pagination"]["currentpage"]=$page;}
+		else{$data["pagination"]["currentpage"]=1;}
+
+		$this->data["pagination"] = $data["pagination"];
+		$this->pages = $this->data["pagination"]["pages"];
+		
+		$this->load->view('media',$this->data);
+	}
+	public function createmedia(){
+		$this->data['listingObj'] = '';
+		$this->load->view('new_media',$this->data);
+	}
+	public function addmedia(){
+		$data['file'] = $_FILES['media_image'];
+		//var_dump($data['file']);
+		$data['media_image_name'] = $this->input->post('media_image_name');
+		$result = $this->Pagesdb->addmedia($data);
+		//var_dump($result);
+		$this->data["success_msg"] = $result;
+		$this->media();
+	}
+	public function deletemedia($id){
+		$this->Pagesdb->deletemedia($id);
+		$this->data["success_msg"] = $result;
+		$this->media();
+	}
 }

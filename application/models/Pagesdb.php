@@ -323,6 +323,157 @@ class Pagesdb extends CI_Model {
 		return array($result1,$result2,$result3);
 	}
 
+	public function get_media_list($startpage,$limit){
+
+		if($this->db->get_where('wp_posts',array('post_type'=>'attachment','post_status'=>'inherit'))->num_rows()>0){
+			$rec = ceil($this->db->get_where('wp_posts',array('post_type'=>'attachment','post_status'=>'inherit'))->num_rows()/$limit);				
+			$lTo = $limit;				
+			if($startpage>$rec){$startpage = $rec;}
+			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
+			else{$lFrom = 0;}		
+			$data["media"] = $this->db->select('wpp.ID,wpp.post_name,wpp.guid,wpp.post_title,wpp.post_date,wpp.post_mime_type,wppm1.meta_value as _wp_attached_file,wppm2.meta_value as _wp_attachment_metadata')->from('wp_posts wpp')
+			->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_wp_attached_file"','left')
+			->join('wp_postmeta wppm2','wppm2.post_id=wpp.ID AND wppm2.meta_key="_wp_attachment_metadata"','left')
+			->limit($lTo,$lFrom)->order_by('wpp.post_date','DESC')->where(array('wpp.post_type'=>'attachment','wpp.post_status'=>'inherit'))->get()->result();				
+			$data["pagination"] = array("currentpage"=>$startpage,"pages"=>$rec);
+		}
+		else{
+			$data["media"] = array();
+			$data["pagination"] = array("currentpage"=>0,"pages"=>0);
+			//throw new Exception("No record found...");
+		}
+		return $data;
+	}
+
+	public function addmedia($data){
+		try{
+			$data['media_image_name'] = str_replace(" ","-",$data['media_image_name']);
+			$imageExt = explode(".",$data['file']['name']);
+			$imageExt = $imageExt[1];
+			$imagename = $data['media_image_name'].'.'.$imageExt;
+			$imgurl = "uploads/media/".$imagename;
+			$guid = base_url('uploads/media/'.$imagename);
+
+			$url_header = @get_headers($url);
+			if($url_header[0] != 'HTTP/1.1 404 Not Found' ){
+				$imagename = $data['media_image_name'].'1.'.$imageExt;
+				$imgurl = "uploads/media/".$imagename;
+				$guid = base_url('uploads/media/'.$imagename);
+			}
+			
+			//var_dump($data);
+			
+			$this->media_image_upload($data['media_image_name'],'media_image');
+			$this->db->insert('wp_posts',array(
+				"post_title"=>$data['media_image_name'],
+				"post_name"=>$data['media_image_name'],
+				"post_mime_type"=>$data['file']['type'],
+				"guid"=> $guid,
+				"post_status"=>"inherit",
+				"post_date"=>date("Y-m-d H:i:s"),
+				"post_date_gmt"=>date("Y-m-d H:i:s"),
+				"post_modified"=>date("Y-m-d H:i:s"),
+				"post_modified_gmt"=>date("Y-m-d H:i:s"),
+				"comment_status"=>"closed",
+				"ping_status"=>"closed",
+				"post_type"=>"attachment",
+				"post_author"=>"1",	
+			));
+			$post_id = $this->db->insert_id();
+			
+			$wp_attached_file = $imgurl;
+			$this->db->insert("wp_postmeta",array(
+				"post_id"=>$post_id,
+				"meta_key"=>'_wp_attached_file',
+				"meta_value"=>$wp_attached_file,
+			));
+			$wp_attachment_metadata = serialize( array(
+				"file"=> $imgurl,
+				"sizes"=> array( 
+					"thumbnail" => array(
+						"file" =>$data['file']['name'],
+						"mime-type" => $data['file']['type']
+					),
+					"image_meta" => array(
+						"aperture" => 0,
+						"credit" => '',
+						"camera" => '',
+						"caption" => "",
+						"created_timestamp" => 0,
+						"copyright" => "",
+						"focal_length" => 0,
+						"iso" => 0,
+						"shutter_speed" => 0,
+						"title" => "",
+						"orientation" =>0,
+					),
+				)
+			));
+			$this->db->insert("wp_postmeta",array(
+				"post_id"=>$post_id,
+				"meta_key"=>'_wp_attachment_metadata',
+				"meta_value"=>$wp_attachment_metadata,
+			));
+			
+			throw new Exception("image uploaded...");	
+		}catch(Exception $e){
+			return $e->getMessage();
+		}
+	}
+	public function deletemedia($id){
+		try{			
+			$posts = $this->db->select('wpp.ID as post_id,wppm.meta_value as _wp_attached_file')->from('wp_posts wpp')
+			->join('wp_postmeta wppm','wppm.post_id=wpp.ID AND wppm.meta_key="_wp_attached_file"','left')
+			->where(array('wpp.ID'=>$id))
+			->result();
+			foreach($posts as $post){
+				@unlink("./".$post->_wp_attached_file);
+			}
+
+			$this->db->where(array('post_id'=>$id))->delete('wp_postmeta');
+			$this->db->where(array('ID'=>$id))->delete('wp_posts');
+			
+			throw new Exception("image Deleted...");	
+		}catch(Exception $e){
+			return $e->getMessage();
+		}
+	}
+	private function media_image_upload($file_name,$tag_name){
+		
+		$this->load->library('image_lib');
+		$config['upload_path'] = "./uploads/media/";
+		$config['allowed_types'] = 'jpg|jpeg|png';
+		$config['max_size']	= '12400'; //in km = 10mb
+		$config['file_name'] = $file_name;
+		$this->load->library('upload', $config);
+		if (!$this->upload->do_upload($tag_name)){
+			return $data["error"] = $this->upload->display_errors();		
+		}else{
+			$image_data = $this->upload->data();
+			//for big
+			//$new_image_path = explode("photo_big/",$image_data["file_path"])[0]."photo_medium/".$file_name.".jpg";
+			$img_cfg['image_library'] = 'gd2';
+			$img_cfg['source_image'] = $image_data["full_path"];
+			$img_cfg['maintain_ratio'] = FALSE;
+			$img_cfg['create_thumb'] = TRUE;
+			$img_cfg['thumb_marker'] = "";
+			$img_cfg['new_image'] = $image_data["full_path"];
+			//$img_cfg['width'] = 600;			
+			//$img_cfg['height'] = 500;
+			$img_cfg['quality'] = "100%";
+			$img_cfg['x_axis'] = '0';
+			$img_cfg['y_axis'] = '0';			
+			$this->image_lib->initialize($img_cfg);
+			$this->image_lib->resize();		
+		}		
+	}
+
+
+
+
+
+
+
 
 
 
