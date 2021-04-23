@@ -149,13 +149,25 @@
                   <div class="controls">
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                       <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                      <?php  if($url_header[0] == 'HTTP/1.1 404 Not Found' ){ ?><img class="img-responsive" src="<?php echo base_url(); ?>sector_photo/sample.jpg" width="100%"/><?php }else{ ?>
-                      <img class="img-responsive" src="<?php echo base_url();?>sector_photo/<?php echo $category_listingObj->category_image; ?>" alt=""> <?php } ?></div>
+                        <?php  if($url_header[0] == 'HTTP/1.1 404 Not Found' ){ ?>
+                          <img class="img-responsive" src="<?php echo base_url(); ?>sector_photo/sample.jpg" width="100%"/>
+                        <?php }else{ ?>
+                          <img class="img-responsive" src="<?php echo base_url();?>sector_photo/<?php echo $category_listingObj->category_image; ?>" alt="">
+                        <?php } ?>
+                      </div>
                       <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-                      <div> <span class="btn btn-file"><span class="fileupload-new">Select File</span> <span class="fileupload-exists">Change</span>
-                        <input name="photo_file_1" type="file" class="default">
-                        </span> <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a> </div>
-                      <div style="margin-top:10px"> <span class="label label-important">Note :</span> <span style="font-weight:normal">Please only upload JPG or JPEG file only ...</span> </div>
+                      <div>
+                        <span class="btn btn-file">
+                          <span class="fileupload-new">Select File</span>
+                          <span class="fileupload-exists">Change</span>
+                          <input name="photo_file_1" type="file" class="default">
+                        </span>
+                        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                      </div>
+                      <div style="margin-top:10px">
+                        <span class="label label-important">Note :</span>
+                        <span style="font-weight:normal">Please only upload JPG or JPEG file only ...</span>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -69,12 +69,9 @@ margin-left:170px !important;
   <!-- approval -->
   <?php
 
-			$sidemenu[9] =array("1"=>"active","2"=>array("1"=>"active"));
-
+			$sidemenu[9] =array("1"=>"active","2"=>array("5"=>"active"));
 			$data["sidemenu"] =  $sidemenu; 
-
 			$this->load->view("sidebar",$data);
-
 		?>
   <!-- BEGIN PAGE -->
   <div class="page-content">
@@ -84,7 +81,7 @@ margin-left:170px !important;
       <div class="row-fluid">
         <div class="span12">
           <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-          <h3 class="page-title">Pages</h3>
+          <h3 class="page-title">Testimonials</h3>
           <!-- END PAGE TITLE & BREADCRUMB-->
         </div>
       </div>
@@ -93,40 +90,18 @@ margin-left:170px !important;
       
       <div class="row-fluid profile">
         <div class="span12">
-          <div>
-            <div class="control-group" style="float:left">
-              <div class="controls" style="font-weight:bold">
-                
-                <span class="help-inline">Page 	&nbsp; </span>
-                <form>
-                  <input type="text" name="navigation_page" value="<?php echo $pagination["currentpage"]; ?>" class="span6 m-wrap" style="width:50px">
-                  <input type="hidden" name="currentpage" value="<?php echo $pagination["currentpage"]; ?>">
-                  <span class="help-inline">of <?php echo $pagination["pages"]; ?></span>
-                </form>
-              </div>
-            </div>
-            <div style="float:right">
-              <div class="hidden-480" style="float:right">
-
-                <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
-                if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
-                <div dir="ltr"> <a href="<?php echo base_url("pages/preview/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/next/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
-              </div>
-            </div>
-            <div style="clear:both"></div>
-          </div>
           <!--BEGIN TABS-->
           <div class="row-fluid">
             <div class="span12">
               <!-- BEGIN PORTLET-->
               <div class="portlet">
                 <div class="portlet-title">
-                  <div class="caption"><i class="icon-list"></i> Manage Pages</div>
+                  <div class="caption"><i class="icon-list"></i> Manage Testimonials</div>
                   <div class="actions">
                     <div class="btn-group">
                       <button class="btn red dropdown-toggle" data-toggle="dropdown">Add New <i class="icon-angle-down"></i></button>
                       <ul class="dropdown-menu pull-right">
-                        <li><a href="<?php echo base_url("pages/addnew/"); ?>"><i class="icon-plus"></i> Add New </a></li>
+                        <li><a href="<?php echo base_url("pages/newtestimonial/"); ?>"><i class="icon-plus"></i> Add New </a></li>
                         <li><a href="#" onClick="confirm_delete_all();"><i class="icon-trash"></i> Delete All </a></li>
                         <li><a href="#" class="delete_selected"><i class="icon-trash"></i>Delete Selected</a></li>
                       </ul>
@@ -143,61 +118,58 @@ margin-left:170px !important;
                     <div style="min-height:31px; vertical-align:middle;"> <?php echo $success_msg; ?> </div>
                     </font> </div>
                   <?php } ?>
-                  <form name="listing-form" method="post" action="<?php echo base_url("listing/delete_selected_listing");?>" enctype="multipart/form-data">
+                  <form name="listing-form" method="post" action="<?php echo base_url("pages/delete_selected_testimonials");?>" enctype="multipart/form-data">
                     <table class="table table-bordered table-advance table-hover" id="sample_1">
                       <thead>
                         <tr>
                           <th style="width:8px;"><div class="checker" id="uniform-undefined"><span class="">
                               <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" style="opacity: 0;">
                               </span></div></th>
-                          <th class="span10">Title</th>
+                          <th class="span4">Name</th>
+                          <th class="span6">Bref</th>
                           <th class="span2">Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php if(!empty($pages)){
-                          foreach($pages as $k=>$page){                            
+                        <?php if(!empty($testimonials)){
+                          foreach($testimonials as $k=>$post){                            
                             ?>
                         <tr>
                           <td style="padding-top:8px">
                             <div class="checker" id="uniform-undefined">
                               <span class="">
-                                <input name="page_status_delete[]" type="checkbox" class="checkboxes" value="<?php echo $page->ID; ?>" style="opacity: 0;">
+                                <input name="page_status_delete[]" type="checkbox" class="checkboxes" value="<?php echo $post->ID; ?>" style="opacity: 0;">
                               </span>
                             </div>
                           </td>
                           <td style="text-align:left; vertical-align:baseline; padding:10px;">
-                            <h5 style="font-weight:700; margin:0;"><?php echo $page->post_title; ?></h5>
-                            <!-- property links -->
-                            <div class="btn-group"> <a class="btn mini purple dropdown-toggle" data-toggle="dropdown" href="#">Edit <i class="icon-angle-down"></i></a>
-                              <ul class="dropdown-menu">
-                                <li><a href="<?php echo base_url("pages/edit/".$page->ID."/".$pagination["currentpage"]);?>"><i class="icon-edit"></i> Edit </a></li>
-                                <li><a onClick="confirm_delete('<?php echo $page->ID;?>','# <?php echo $page->ID;?>','<?php echo $pagination["startpage"];?>')" style="cursor:pointer"><i class="icon-trash"></i> Delete </a></li>
-                                <li><a href="<?php echo base_url("pages/listing_statistics/".$page->ID); ?>"><i class="icon-bar-chart"></i> Statistics </a></li>
-                                <li><a href="<?php echo base_url($page->post_name); ?>" target="_blank"><i class="icon-zoom-in"></i> Preview </a></li>
-                              </ul>
-                            </div>
+                            <h5 style="font-weight:700; margin:0;"><?php echo $post->tss_name; ?></h5>                            
+                          </td>
+                          <td style="text-align:left; vertical-align:baseline; padding:10px;">
+                            <h5 style="font-weight:700; margin:0;"><?php echo $post->tss_testimonial; ?></h5>                            
                           </td>
                           <td style="padding-right:20px; vertical-align:middle;">                          
                               <!-- details -->
                               <div class="hidden-768" style="margin-left:0px; margin-bottom:5px; margin-top:10px">
                                 <div class="span12">
-                                  <div class="td_label">Status</div>
-                                  <div class="td_value"><?php echo $page->post_status; ?></div>
-                                  <div class="td_clear"></div>
-                                  <div class="td_label">Viewed</div>
-                                  <div class="td_value">times</div>
-                                  <div class="td_clear"></div>
                                   <div class="td_label">Date</div>
-                                  <div class="td_value"><?php echo date('d M y',strtotime($page->post_modified));?></div>
+                                  <div class="td_value"><?php echo date('d M y',strtotime($post->post_modified));?></div>
                                   <div class="td_clear"></div>
                                 </div>
+                                
                                 <div class="clearfix"></div>
+                                <!-- property links -->
+                                <div class="btn-group"> <a class="btn mini purple dropdown-toggle" data-toggle="dropdown" href="#">Edit <i class="icon-angle-down"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="<?php echo base_url("pages/edittestimonial/".$post->ID);?>"><i class="icon-edit"></i> Edit </a></li>
+                                        <li><a href="<?php echo base_url("pages/delete_testimonial/".$post->ID);?>"><i class="icon-trash"></i> Delete </a></li>
+                                        
+                                    </ul>
+                                </div>
                               </div> 
                           </td>                          
                         </tr>
                         <?php
-                        
                        }
                         
                       }else{ echo "Record Not Found!";}?>
@@ -211,27 +183,6 @@ margin-left:170px !important;
           </div>
           <!--END TABS-->
           <!-- navigation here -->
-          <div style="padding-bottom:50px">
-            <div class="control-group" style="float:left">
-              <div class="controls" style="font-weight:bold">
-                
-                <span class="help-inline">Page 	&nbsp; </span>
-                <form>
-                  <input type="text" name="navigation_page" value="<?php echo $pagination["currentpage"]; ?>" class="span6 m-wrap" style="width:50px">
-                  <input type="hidden" name="currentpage" value="<?php echo $pagination["currentpage"]; ?>">
-                  <span class="help-inline">of <?php echo $pagination["pages"]; ?></span>
-                </form>
-              </div>
-            </div>
-            <div style="float:right">
-              <div class="hidden-480" style="float:right">
-                <?php if($pagination["currentpage"]>0){$pre = $pagination["currentpage"]-1;}else{$pre=0;}
-                if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentpage"]+1;}else{$nxt=$pagination["pages"];}?>
-                <div dir="ltr"> <a href="<?php echo base_url("pages/prev/".$pre); ?>" class="btn black"><i class="m-icon-swapleft m-icon-white"></i> Prev</a> <a href="<?php echo base_url("pages/next/".$nxt); ?>" class="btn black">Next <i class="m-icon-swapright m-icon-white"></i></a> </div>
-              </div>
-            </div>
-            <div style="clear:both"></div>
-          </div>
         </div>
       </div>
       <!-- END PAGE CONTENT-->

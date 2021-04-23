@@ -23,6 +23,7 @@ class Pages extends CI_Controller {
 	{
 	  parent::__construct();
       $this->load->model("Pagesdb");
+	  $this->Chome = & get_instance();
 	}		
 	public function index(){
 
@@ -292,9 +293,95 @@ class Pages extends CI_Controller {
 		$this->data["success_msg"] = $result;
 		$this->media();
 	}
+	public function get_image_by_id($id){
+		return $this->Pagesdb->get_image_by_id($id);
+	}
 	public function deletemedia($id){
-		$this->Pagesdb->deletemedia($id);
+		$result = $this->Pagesdb->deletemedia($id);
 		$this->data["success_msg"] = $result;
 		$this->media();
+	}
+	public function banners(){
+		if(!array_key_exists("ud",$this->session->userdata())){redirect("login");}
+
+		if(isset($this->data["page"])){$page = $this->data["page"];}
+		else{$page=1;}
+		$data = $this->Pagesdb->get_banners($page,20);
+		
+		$this->data["sliders"]= $data["sliders"];
+		$this->data["banners"]= $data["banners"];
+
+		if(isset($page)){$data["pagination"]["currentpage"]=$page;}
+		else{$data["pagination"]["currentpage"]=1;}
+
+		$this->data["pagination"] = $data["pagination"];
+		$this->pages = $this->data["pagination"]["pages"];
+
+		$this->load->view('banners',$this->data);
+	}
+	public function createbanner(){
+		$data = $this->Pagesdb->get_media_list(0,100);
+		$this->data['media'] = $data['media'];
+		$this->load->view('new_banner',$this->data);
+	}
+	public function addbanner(){
+		$data = array(
+			"id" => $this->input->post("post_id"),
+			"title" => $this->input->post("title"),
+			"description" => $this->input->post("description")
+		);
+		$result = $this->Pagesdb->addbanner($data);
+		$this->banners();
+	}
+	public function deletebanner($id){
+		$result = $this->Pagesdb->deletebanner($id);
+		$this->data["success_msg"] = $result;
+		$this->banners();
+	}
+	public function testimonials(){
+		$result = $this->Pagesdb->testimonials();
+		$this->data['testimonials'] = $result;
+		$this->load->view('testimonials',$this->data);
+	}
+	public function newtestimonial(){
+		
+		$data = array(
+			"tss_name"=>'',
+			'tss_testimonial'=>'',
+			'tss_image'=>'',
+		);
+		$this->load->view('new_testimonial');
+	}
+	
+	public function addtestimonial(){
+		$data = array(
+			"tss_name"=>$this->input->post('tss_name'),
+			'tss_testimonial'=>$this->input->post('tss_testimonial'),
+			'tss_image'=>$this->input->post('tss_image'),
+		);
+		$result = $this->Pagesdb->addtestimonial($data);
+		$this->testimonials();
+	}
+	public function edittestimonial($id){
+		$this->data['testimonial'] = $this->Pagesdb->get_testimonial($id);
+		$this->load->view('edit_testimonial',$this->data);
+	}
+	public function updatetestimonial(){
+		$data = array(
+			"post_id" => $this->input->post('post_id'), 
+			"tss_name"=>$this->input->post('tss_name'),
+			'tss_testimonial'=>$this->input->post('tss_testimonial'),
+			'tss_image'=>$this->input->post('tss_image'),
+		);
+		$this->Pagesdb->updatetestimonial($data);
+		$this->testimonials();
+	}
+	public function ajax_media(){
+		$result = $this->Pagesdb->get_media_list(0,100);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result['media']));
+	}
+	public function delete_testimonial($id){
+		$this->Pagesdb->delete_testimonial($id);
+		$this->testimonials();
 	}
 }

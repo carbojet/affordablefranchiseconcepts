@@ -31,6 +31,15 @@
 	<script type='text/javascript' src='<?php echo base_url();?>theme/frontend/js/jquery.cycle.all.min.js?ver=4.3.1'></script>
 	<script type='text/javascript' src='<?php echo base_url();?>theme/frontend/js/bootstrap.min.js?ver=3.3.2'></script>
 	<script type='text/javascript' src='<?php echo base_url();?>theme/frontend/js/bootstrap-select.js'></script>
+
+	<!-- testimonial -->
+	<link href="<?php echo base_url();?>theme/plugins/owl/custom_style.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>theme/plugins/owl/owl.carousel.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>theme/plugins/owl/owl.theme.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo base_url();?>theme/plugins/owl/owl.transitions.css" rel="stylesheet" type="text/css"/>
+	<script src='<?php echo base_url();?>theme/plugins/owl/owl.carousel.js' type='text/javascript'></script>
+	
+
 	<link rel="shortcut icon" href="<?php echo base_url("theme");?>img/icon.png" />
 
 <!-- END HEAD -->

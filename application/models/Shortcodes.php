@@ -3136,4 +3136,192 @@ class Shortcodes extends CI_Model {
 			}
 		}
 	}
+	public function get_image_by_id($id){
+		$result = $this->db->select('wpp.ID,wpp.post_title,wpp.post_mime_type,wpp.post_date,wpp.guid,wppm.meta_value as _wp_attached_file')
+		->from('wp_posts wpp')
+		->join('wp_postmeta wppm','wppm.post_id=wpp.ID AND wppm.meta_key="_wp_attached_file"','left')
+		->where(array('wpp.ID'=>$id))
+		->get()->result();
+		return $result[0];
+	}
+	public function cycloneslider($args=array()){
+		
+		$arg_array = array(
+			'id' => 0
+		);
+		if(is_array($args) && count($args)>0){
+			$arg_array = array_merge($arg_array,$args);
+		}
+		//var_dump($args);
+		
+		$result = $this->db->select('
+			wpp.ID,
+			wppm1.meta_value as _cycloneslider_metas,
+			')
+			->from('wp_posts wpp')
+			->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_cycloneslider_metas"','left')
+			->order_by('wpp.post_date','DESC')
+			->where(array('wpp.post_type'=>'cycloneslider','wpp.post_status'=>'publish',"wpp.ID"=>44))->get()->result();
+		$slider = $result[0];
+		$slider->_cycloneslider_metas = unserialize($slider->_cycloneslider_metas);
+		
+		
+		$html ='<div class="cycloneslider cycloneslider-template-responsive" id="cycloneslider-slider-'.$slider->ID.'">
+				<div class="cycloneslider-slides">
+					<img src="'.base_url('uploads/2021/03/cycloneslider_trans-1400x445.gif').'" alt="">';
+					foreach($slider->_cycloneslider_metas as $banner){
+						$result = $this->get_image_by_id($banner['id']);
+						$html .='
+						<div class="cycloneslider-slide" style="position: absolute; top: 0px; left: 0px; display: none; z-index: 6; opacity: 0;">
+							<img src="'.base_url('uploads/'.$result->_wp_attached_file).'" alt="slide">
+						</div>';
+					}
+					
+				$html .='</div>
+			</div>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					(function() {
+						var slider = "#cycloneslider-slider-44";
+						jQuery(slider+" .cycloneslider-slides").cycle(
+							{
+								fx: "fade",
+								speed: 1000,
+								timeout: 10000,
+								pager: jQuery(slider+" .cycloneslider-pager"),
+								prev: jQuery(slider+" .cycloneslider-prev"),
+								next: jQuery(slider+" .cycloneslider-next"),
+								slideExpr: ".cycloneslider-slide",
+								slideResize: false,	pause:false	
+							}
+						);
+					})();
+				});
+			</script>
+			';
+		return $html;
+	}
+
+
+
+	public function testimonialslider(){
+		$result = $this->db->select('
+			wpp.ID,
+			wpp.post_title,
+			wpp.post_name,
+			wpp.post_date,
+			wpp.post_modified,
+			wppm1.meta_value as _edit_lock,
+			wppm2.meta_value as _edit_last,
+			wppm3.meta_value as tss_name,
+			wppm4.meta_value as tss_ocupation,
+			wppm5.meta_value as tss_image,
+			wppm6.meta_value as tss_testimonial,
+			wppm7.meta_value as _wp_old_slug
+			')->from('wp_posts wpp')
+		->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_edit_lock"','left')
+		->join('wp_postmeta wppm2','wppm2.post_id=wpp.ID AND wppm2.meta_key="_edit_last"','left')
+		->join('wp_postmeta wppm3','wppm3.post_id=wpp.ID AND wppm3.meta_key="tss_name"','left')
+		->join('wp_postmeta wppm4','wppm4.post_id=wpp.ID AND wppm4.meta_key="tss_ocupation"','left')
+		->join('wp_postmeta wppm5','wppm5.post_id=wpp.ID AND wppm5.meta_key="tss_image"','left')
+		->join('wp_postmeta wppm6','wppm6.post_id=wpp.ID AND wppm6.meta_key="tss_testimonial"','left')
+		->join('wp_postmeta wppm7','wppm7.post_id=wpp.ID AND wppm7.meta_key="_wp_old_slug"','left')
+		->where(array("wpp.post_type"=>"tss_data","post_status"=>"publish"))
+		->order_by('wpp.post_modified','ASC')
+		->get()->result();
+		
+		
+            $html ='<h3 class="listing-title">Testimonials</h3>';
+			
+			$html .='<style>
+				.owl-buttons{
+					color:#0a0a0a;  
+				}
+				.owl-buttons{
+				}
+			</style>
+			<div id="mpsp_wrapper" style="padding:10px;border-radius:5px;">
+				
+				<style type="text/css">
+					#tss_warppper{
+						background: #ffffff;
+						width: 200px;
+						text-align: center;
+						margin: 0 auto;
+						padding: 10px;
+					}
+					#tss_image{
+						width: 100px;
+						height: 100px;
+						border-radius:2px;
+						text-align: center;
+					}
+					.tss_p{
+						font-size: 14px;
+						font-weight: 100;
+						color: #0a0202;
+					}
+					#tss_name{
+						font-weight: bold;
+						font-size: 16px;
+						text-align: center;
+					}
+
+					#tss_occupation{
+						font-style: italic;
+						text-align: center;
+
+					}
+
+					#tss_testimonial span{
+						font-size: 29px;
+						font-weight:bold;
+						color: #dddddd;
+					}
+					#tss_testimonial{
+						font-size: 15px;
+						text-align: left;
+					}
+				</style>
+				
+				<div id="tss_id80" class="owl-carousel owl-theme">';
+					foreach($result as $item){
+						if($item->tss_image==''){
+							$item->tss_image =base_url('theme/img/user-icon.jpg');
+						}
+						$html .='<div class="owl-item">
+									<div id="tss_warppper">
+										<div id="tss_content">
+											<img id="tss_image" src="'.$item->tss_image.'">
+											<p class="tss_p" id="tss_name">'.$item->tss_name.'</p>
+											<p class="tss_p" id="tss_occupation"></p>
+											<p class="tss_p" id="tss_testimonial"><span>"</span>'.$item->tss_testimonial.'<span>"</span></p>
+										</div>  
+									</div>
+								</div>';
+					}									
+				$html .= '</div>
+			</div>
+        <script>
+			jQuery(document).ready(function() {
+	
+				jQuery("#tss_id80").owlCarousel({
+					autoPlay : true,
+					stopOnHover : true,
+					navigation: false,
+					paginationSpeed : 1000,
+					goToFirstSpeed : 2000,
+					singleItem : true,
+					autoHeight : true,
+					transitionStyle: "fade",
+					pagination : true,
+					paginationNumbers :false,
+					navigationText : ["<b><</b>", "<b>></b>"],
+
+				});
+			});
+        </script>';
+
+		return $html;           
+	}
 } 

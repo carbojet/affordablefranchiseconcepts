@@ -347,23 +347,20 @@ class Pagesdb extends CI_Model {
 
 	public function addmedia($data){
 		try{
+			$folderDir = date('Y/m');
+			if (!file_exists('uploads/'.$folderDir)){
+				mkdir("uploads/".$folderDir, 0777);
+			}
 			$data['media_image_name'] = str_replace(" ","-",$data['media_image_name']);
 			$imageExt = explode(".",$data['file']['name']);
 			$imageExt = $imageExt[1];
 			$imagename = $data['media_image_name'].'.'.$imageExt;
-			$imgurl = "uploads/media/".$imagename;
-			$guid = base_url('uploads/media/'.$imagename);
+			$imgurl = $folderDir.'/'.$imagename;
+			$guid = base_url('uploads/'.$imgurl);
 
-			$url_header = @get_headers($url);
-			if($url_header[0] != 'HTTP/1.1 404 Not Found' ){
-				$imagename = $data['media_image_name'].'1.'.$imageExt;
-				$imgurl = "uploads/media/".$imagename;
-				$guid = base_url('uploads/media/'.$imagename);
-			}
-			
 			//var_dump($data);
 			
-			$this->media_image_upload($data['media_image_name'],'media_image');
+			$this->media_image_upload($data['media_image_name'],'media_image',$folderDir);
 			$this->db->insert('wp_posts',array(
 				"post_title"=>$data['media_image_name'],
 				"post_name"=>$data['media_image_name'],
@@ -387,11 +384,14 @@ class Pagesdb extends CI_Model {
 				"meta_key"=>'_wp_attached_file',
 				"meta_value"=>$wp_attached_file,
 			));
+			$imagesize = @getimagesize($data['file']['tmp_name']);
 			$wp_attachment_metadata = serialize( array(
 				"file"=> $imgurl,
+				"width"=>$imagesize[0],
+				"height"=>$imagesize[1],
 				"sizes"=> array( 
 					"thumbnail" => array(
-						"file" =>$data['file']['name'],
+						"fileimagesize" =>$data['file']['name'],
 						"mime-type" => $data['file']['type']
 					),
 					"image_meta" => array(
@@ -425,7 +425,7 @@ class Pagesdb extends CI_Model {
 			$posts = $this->db->select('wpp.ID as post_id,wppm.meta_value as _wp_attached_file')->from('wp_posts wpp')
 			->join('wp_postmeta wppm','wppm.post_id=wpp.ID AND wppm.meta_key="_wp_attached_file"','left')
 			->where(array('wpp.ID'=>$id))
-			->result();
+			->get()->result();
 			foreach($posts as $post){
 				@unlink("./".$post->_wp_attached_file);
 			}
@@ -438,10 +438,10 @@ class Pagesdb extends CI_Model {
 			return $e->getMessage();
 		}
 	}
-	private function media_image_upload($file_name,$tag_name){
+	private function media_image_upload($file_name,$tag_name,$folderDir){
 		
 		$this->load->library('image_lib');
-		$config['upload_path'] = "./uploads/media/";
+		$config['upload_path'] = "./uploads/".$folderDir;
 		$config['allowed_types'] = 'jpg|jpeg|png';
 		$config['max_size']	= '12400'; //in km = 10mb
 		$config['file_name'] = $file_name;
@@ -467,6 +467,210 @@ class Pagesdb extends CI_Model {
 			$this->image_lib->resize();		
 		}		
 	}
+	public function get_image_by_id($id){
+		$result = $this->db->select('wpp.ID,wpp.post_title,wpp.post_mime_type,wpp.post_date,wpp.guid,wppm.meta_value as _wp_attached_file')
+		->from('wp_posts wpp')
+		->join('wp_postmeta wppm','wppm.post_id=wpp.ID AND wppm.meta_key="_wp_attached_file"','left')
+		->where(array('wpp.ID'=>$id))
+		->get()->result();
+		return $result[0];
+	}	
+	public function get_banners($startpage,$limit){
+
+		if($this->db->get_where('wp_posts',array('post_type'=>'cycloneslider','post_status'=>'publish'))->num_rows()>0){
+			$rec = ceil($this->db->get_where('wp_posts',array('post_type'=>'cycloneslider','post_status'=>'publish'))->num_rows()/$limit);				
+			$lTo = $limit;				
+			if($startpage>$rec){$startpage = $rec;}
+			if($startpage>1){$lFrom = ($startpage-1)*$limit;}
+			else{$lFrom = 0;}		
+			$data["sliders"] = $this->db->select('
+			wpp.ID,
+			wppm1.meta_value as _edit_last,
+			wppm2.meta_value as _edit_lock,
+			wppm3.meta_value as _cycloneslider_metas,
+			wppm4.meta_value as _cycloneslider_settings
+			')
+			->from('wp_posts wpp')
+			->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_edit_last"','left')
+			->join('wp_postmeta wppm2','wppm2.post_id=wpp.ID AND wppm2.meta_key="_edit_lock"','left')
+			->join('wp_postmeta wppm3','wppm3.post_id=wpp.ID AND wppm3.meta_key="_cycloneslider_metas"','left')
+			->join('wp_postmeta wppm4','wppm4.post_id=wpp.ID AND wppm4.meta_key="_cycloneslider_settings"','left')
+			->limit($lTo,$lFrom)->order_by('wpp.post_date','DESC')
+			->where(array('wpp.post_type'=>'cycloneslider','wpp.post_status'=>'publish'))->get()->result();				
+			$data["pagination"] = array("currentpage"=>$startpage,"pages"=>$rec);
+			$images = array();
+			$banner = $data['sliders'][0];
+				
+			$banner->_cycloneslider_metas = unserialize($banner->_cycloneslider_metas);
+			//var_dump($banner);
+			
+			foreach($banner->_cycloneslider_metas as $img){
+				//var_dump($img);
+				$image = (array) $this->get_image_by_id($img['id']);
+				$image = (object)array_merge($image,$img);
+				$images[] = $image;
+			}				
+			$data['banners'] = $images;
+		}
+		else{
+			$data["sliders"] = array();
+			$data['banners'] = array();
+			$data["pagination"] = array("currentpage"=>0,"pages"=>0);
+			//throw new Exception("No record found...");
+		}
+		return $data;
+	}
+	public function addbanner($data){
+		$img = array(
+			"id"=>$data['id'],
+			"link"=>'',
+			"title"=>$data['title'],
+			"description"=>$data['description'],
+			"link_target"=>"_self",
+			"fx"=>"",
+			"speed"=> "",
+			"timeout"=> "",
+			"type"=>"image"
+		);
+		$sliders = $this->db->select('
+			wpp.ID,
+			wppm1.meta_value as _cycloneslider_metas,
+			')
+			->from('wp_posts wpp')
+			->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_cycloneslider_metas"','left')
+			->order_by('wpp.post_date','DESC')
+			->where(array('wpp.post_type'=>'cycloneslider','wpp.post_status'=>'publish'))->get()->result();
+		$slider = $sliders[0];
+		$post_id = $slider->ID;
+		$banners = unserialize( $slider->_cycloneslider_metas );
+		$banners[] = $img;
+		$this->db->where(array("post_id"=>$post_id,"meta_key"=>"_cycloneslider_metas"))->update("wp_postmeta",array("meta_value"=>serialize($banners)));
+	}
+	public function deletebanner($id){
+		$sliders = $this->db->select('
+			wpp.ID,
+			wppm1.meta_value as _cycloneslider_metas,
+			')
+			->from('wp_posts wpp')
+			->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_cycloneslider_metas"','left')
+			->limit($lTo,$lFrom)->order_by('wpp.post_date','DESC')
+			->where(array('wpp.post_type'=>'cycloneslider','wpp.post_status'=>'publish'))->get()->result();
+		$slider = $sliders[0];
+		$post_id = $slider->ID;
+		$banners = unserialize( $slider->_cycloneslider_metas );
+		unset($banners[$id]);
+		$banners = serialize( array_values($banners));
+		$this->db->where(array('post_id'=>$post_id,'meta_key'=>'_cycloneslider_metas'))->upadate('wp_postmeta',array('meta_value'=>$banners));
+	}
+
+	public function testimonials(){
+
+		$result = $this->db->select('
+			wpp.ID,
+			wpp.post_title,
+			wpp.post_name,
+			wpp.post_date,
+			wpp.post_modified,
+			wppm1.meta_value as _edit_lock,
+			wppm2.meta_value as _edit_last,
+			wppm3.meta_value as tss_name,
+			wppm4.meta_value as tss_ocupation,
+			wppm5.meta_value as tss_image,
+			wppm6.meta_value as tss_testimonial,
+			wppm7.meta_value as _wp_old_slug
+			')->from('wp_posts wpp')
+		->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_edit_lock"','left')
+		->join('wp_postmeta wppm2','wppm2.post_id=wpp.ID AND wppm2.meta_key="_edit_last"','left')
+		->join('wp_postmeta wppm3','wppm3.post_id=wpp.ID AND wppm3.meta_key="tss_name"','left')
+		->join('wp_postmeta wppm4','wppm4.post_id=wpp.ID AND wppm4.meta_key="tss_ocupation"','left')
+		->join('wp_postmeta wppm5','wppm5.post_id=wpp.ID AND wppm5.meta_key="tss_image"','left')
+		->join('wp_postmeta wppm6','wppm6.post_id=wpp.ID AND wppm6.meta_key="tss_testimonial"','left')
+		->join('wp_postmeta wppm7','wppm7.post_id=wpp.ID AND wppm7.meta_key="_wp_old_slug"','left')
+		->where(array("wpp.post_type"=>"tss_data","post_status"=>"publish"))
+		->order_by('wpp.post_modified','ASC')
+		->get()->result();
+		return $result;
+	}
+	public function addtestimonial($data){
+		try{
+
+			$this->db->insert('wp_posts',array(			
+				"post_status"=>"publish",
+				"post_date"=>date("Y-m-d H:i:s"),
+				"post_date_gmt"=>date("Y-m-d H:i:s"),
+				"post_modified"=>date("Y-m-d H:i:s"),
+				"post_modified_gmt"=>date("Y-m-d H:i:s"),
+				"comment_status"=>"closed",
+				"ping_status"=>"closed",
+				'post_type'=>'tss_data',
+				"post_author"=>"1",	
+			));
+			$post_id = $this->db->insert_id();
+			
+			$this->db->insert('wp_postmeta',array(
+				'post_id'=>$post_id,
+				'meta_key'=>'tss_image',
+				'meta_value'=>$data['tss_image'],
+			));
+			$this->db->insert('wp_postmeta',array(
+				'post_id'=>$post_id,
+				'meta_key'=>'tss_name',
+				'meta_value'=>$data['tss_name'],
+			));
+			$this->db->insert('wp_postmeta',array(
+				'post_id'=>$post_id,
+				'meta_key'=>'tss_testimonial',
+				'meta_value'=>$data['tss_testimonial'],
+			));
+			
+			throw new Exception("New Testimonial created...");
+		}catch(Exception $e){
+			return $e->getMessage();
+		}
+	}
+	public function get_testimonial($id){
+		$result = $this->db->select('
+			wpp.ID,
+			wpp.post_title,
+			wpp.post_name,
+			wpp.post_date,
+			wpp.post_modified,
+			wppm1.meta_value as _edit_lock,
+			wppm2.meta_value as _edit_last,
+			wppm3.meta_value as tss_name,
+			wppm4.meta_value as tss_ocupation,
+			wppm5.meta_value as tss_image,
+			wppm6.meta_value as tss_testimonial,
+			wppm7.meta_value as _wp_old_slug
+			')->from('wp_posts wpp')
+		->join('wp_postmeta wppm1','wppm1.post_id=wpp.ID AND wppm1.meta_key="_edit_lock"','left')
+		->join('wp_postmeta wppm2','wppm2.post_id=wpp.ID AND wppm2.meta_key="_edit_last"','left')
+		->join('wp_postmeta wppm3','wppm3.post_id=wpp.ID AND wppm3.meta_key="tss_name"','left')
+		->join('wp_postmeta wppm4','wppm4.post_id=wpp.ID AND wppm4.meta_key="tss_ocupation"','left')
+		->join('wp_postmeta wppm5','wppm5.post_id=wpp.ID AND wppm5.meta_key="tss_image"','left')
+		->join('wp_postmeta wppm6','wppm6.post_id=wpp.ID AND wppm6.meta_key="tss_testimonial"','left')
+		->join('wp_postmeta wppm7','wppm7.post_id=wpp.ID AND wppm7.meta_key="_wp_old_slug"','left')
+		->where(array("wpp.ID"=>$id))
+		->get()->result();
+		return $result[0];
+	}
+	public function updatetestimonial($data){
+		$this->db->where(array('post_id'=>$data['post_id'],'meta_key'=>'tss_image'))->update('wp_postmeta',array(				
+			'meta_value'=>$data['tss_image'],
+		));
+		$this->db->where(array('post_id'=>$data['post_id'],'meta_key'=>'tss_name'))->update('wp_postmeta',array(
+			'meta_value'=>$data['tss_name'],
+		));
+		$this->db->where(array('post_id'=>$data['post_id'],'meta_key'=>'tss_testimonial'))->update('wp_postmeta',array(
+			'meta_value'=>$data['tss_testimonial'],
+		));
+	}
+	public function delete_testimonial($id){
+		$this->db->where(array("ID"=>$id))->delete("wp_posts");
+		$this->db->where(array("post_id"=>$id))->delete("wp_postmeta");
+	}
+
+
 
 
 

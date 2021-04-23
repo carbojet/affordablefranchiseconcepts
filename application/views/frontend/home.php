@@ -10,7 +10,8 @@
             ?>
             <?php if($slug=='home'){?>
             <div class="top-slider">
-                <div class="cycloneslider cycloneslider-template-responsive" id="cycloneslider-slider-1">
+                <!--
+                <div class="cycloneslider cycloneslider-template-responsive" id="cycloneslider-slider-44">
                     <div class="cycloneslider-slides">
                         <img src="https://www.affordablebusinessconcepts.com/wp-content/uploads/2021/03/cycloneslider_trans-1400x445.gif" alt="">
                         <div class="cycloneslider-slide" style="position: absolute; top: 0px; left: 0px; display: none; z-index: 6; opacity: 0;">
@@ -33,25 +34,12 @@
                         </div>
                     </div>
                 </div>
-                <script type="text/javascript">
-                    jQuery(document).ready(function(){
-                        (function() {
-                            var slider = '#cycloneslider-slider-1';
-                            jQuery(slider+' .cycloneslider-slides').cycle(
-                                {
-                                    fx: "fade",
-                                    speed: 1000,
-                                    timeout: 10000,
-                                    pager: jQuery(slider+' .cycloneslider-pager'),
-                                    prev: jQuery(slider+' .cycloneslider-prev'),
-                                    next: jQuery(slider+' .cycloneslider-next'),
-                                    slideExpr: '.cycloneslider-slide',
-                                    slideResize: false,	pause:false	
-                                }
-                            );
-                        })();
-                    });
-                </script>
+                
+                -->
+                
+                <?php
+                    echo $this->Chome->do_shortcode('[cycloneslider]');
+                ?>
                 <div class="search-sec">
                     <?php
                         echo $this->Chome->do_shortcode('[search_list_form]');

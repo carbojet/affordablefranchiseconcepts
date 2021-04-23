@@ -345,18 +345,18 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
                           <td style="padding-top:8px"><div class="checker" id="uniform-undefined"><span class="">
                               <input name="listing_status_delete[]" type="checkbox" class="checkboxes" value="<?php echo $listingObj->listing_id; ?>" style="opacity: 0;">
                               </span></div></td>
-                          <td style="padding-right:20px; vertical-align:middle"><div style="padding:5px 0 5px 0">
+                          <td style="padding-right:20px; vertical-align:middle">
+                            <div style="padding:5px 0 5px 0">
                               <?php $visitor_commentObj  = $this->Listingdb->get_listing_rating(array("listing_id"=>$listingObj->listing_id)); 
 
-													if(!empty($visitor_commentObj->comment_rating)){?>
-                              <img width="84" height="16" src="<?php echo base_url('theme');?>/img/stars/pic_star<?php echo $visitor_commentObj->comment_rating; ?>.png" alt="" style="width:84px; height:16px;">
+													    if(!empty($visitor_commentObj->comment_rating)){?>
+                                <img width="84" height="16" src="<?php echo base_url('theme');?>/img/stars/pic_star<?php echo $visitor_commentObj->comment_rating; ?>.png" alt="" style="width:84px; height:16px;">
                               <?php }?>
                             </div>
                             <h5 style="font-weight:700; margin:0;"><?php echo $listingObj->listing_title_1; ?></h5>
                             <?php 
-								echo $this->Listingdb->listing_location_path($listingObj->listing_location_path);
-								
-							?>
+            								  echo $this->Listingdb->listing_location_path($listingObj->listing_location_path);
+								            ?>
                             <!-- details -->
                             <div class="hidden-768" style="margin-left:0px; margin-bottom:5px; margin-top:10px">
                               <div class="span6">
@@ -429,9 +429,9 @@ if($pagination["currentpage"]<$pagination["pages"]){$nxt = $pagination["currentp
                           <td style="text-align:right; vertical-align:middle; padding:10px;"><?php
 
 													$listing_photoObj = $this->Listingdb->get_listing_main_photo(array("listing_id"=>$listingObj->listing_id,"photo_status_main"=>"main"));													
-													if(!empty($listing_photoObj->photo_id)){
-
-												?>
+													var_dump($listing_photoObj);
+                          if(!empty($listing_photoObj->photo_id)){
+  												?>
                             <img src="<?php echo base_url();?>photo_medium/<?php echo $listing_photoObj->photo_id;?>.jpg" border="0" style="border:1px solid #cccccc; padding:2px">
                             <?php }?>
                           </td>
