@@ -150,7 +150,7 @@ class Listing extends CI_Controller {
 		
 
 		$this->data["listing_list"]= $data["listing_list"];
-                if($data["pagination"]['startpage']>0){
+        if($data["pagination"]['startpage']>0){
 			$temp_array = $data["pagination"];
 			$temp_array['currentpage'] = $data["pagination"]['startpage'];
 			$data["pagination"]=$temp_array;
