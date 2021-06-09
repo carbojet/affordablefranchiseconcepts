@@ -800,19 +800,22 @@ input[type=checkbox] {
 				}
 				
 			})
-      jQuery('body').on("change","input[name=listing_title_1]",function(){
-        var slug = $(this).val().replace(/\s/g, '-').replace(/'/g, '-');
-        jQuery(".sec_cat").each(function(index,elem){
-          i = index+1;
-          if(jQuery(this).find("#listing_sector_"+i+' select').val()!==undefined){            
-            slug +='-'+jQuery(this).find("#listing_sector_"+i+' select option:selected').text().replace(/\s/g, '-')
-          }
-          if(jQuery(this).find("#listing_category_"+i+' select').val()!==undefined){
-            slug +='-'+jQuery(this).find("#listing_category_"+i+' select option:selected').text().replace(/\s/g, '-')
-          }
-        })
-        jQuery("input[name=listing_slug]").val(slug)
-      })
+            jQuery('body').on("change","form input,form select",function(){
+                
+                var slug = $('input[name=listing_title_1]').val().replace(/\s/g, '-').replace(/'/g, '-')
+                $.each($('div.sec_cat'),function(key,row){
+                  $(row).find('select').each(function(key,select){
+                    if($(select).val()!=''){
+                      slug += '-'+$(select).children("option").filter(":selected").text().replace(/\s/g, '-').replace(/'/g, '-')
+                    }            
+                  })
+                })
+                if($('select[name=listing_location_3]').val()!=''){
+                  slug += '-'+$('select[name=listing_location_3]').children("option").filter(":selected").text().replace(/\s/g, '-').replace(/'/g, '-')
+                }
+                
+                jQuery("input[name=listing_slug]").val(slug.toLowerCase())
+            })
 			
 			jQuery("body").on("click","button[name=minusbutton]",function(){
 				

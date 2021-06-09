@@ -49,22 +49,16 @@ class Listingdb extends CI_Model {
 	public function temp_fun()
 	{}	
 
-public function listing_location_path($path){
-
-$path = explode("-",$path);
-$result1 = $this->db->get_where("setup_location",array("location_parent"=>0,"location_id"=>$path[1]))->result();
-foreach($result1 as $obj){ $country = $obj->location_name;}
-
-$result2 = $this->db->get_where("setup_location",array("location_id"=>$path[2]))->result();
-foreach($result2 as $obj){ $state = $obj->location_name;}
-
-$result3 = $this->db->get_where("setup_location",array("location_id"=>$path[3]))->result();
-foreach($result3 as $obj){ $city = $obj->location_name;}
-
-return "$city, $state, $country";
-
-
-}
+	public function listing_location_path($path){
+		$path = explode("-",$path);
+		$result1 = $this->db->get_where("setup_location",array("location_parent"=>0,"location_id"=>$path[1]))->result();
+		foreach($result1 as $obj){ $country = $obj->location_name;}
+		$result2 = $this->db->get_where("setup_location",array("location_id"=>$path[2]))->result();
+		foreach($result2 as $obj){ $state = $obj->location_name;}
+		$result3 = $this->db->get_where("setup_location",array("location_id"=>$path[3]))->result();
+		foreach($result3 as $obj){ $city = $obj->location_name;}
+		return "$city, $state, $country";
+	}
 
 
 	public function listing_list($startpage,$limit)
@@ -74,49 +68,98 @@ return "$city, $state, $country";
 			if($this->db->get("listing")->num_rows()>0)
 			{
 				$rec = ceil($this->db->get("listing")->num_rows()/$limit);				
-
 				$lTo = $limit;				
-
 				//if($startpage<1){$startpage=1;}
-
 				if($startpage>$rec){$startpage = $rec;}
-
 				if($startpage>1){$lFrom = ($startpage-1)*$limit;}
-
 				else{$lFrom = 0;}				
-
 				$query = $this->db->select("*")->from("listing")->join('seller', 'seller.seller_id = listing.listing_seller')->join("setup_location","setup_location.location_id = seller.seller_country")->order_by('listing_id', 'desc')->limit($lTo,$lFrom);				
-				
 				$data["listing_list"] = $this->db->get()->result();
-				
-				
-
 				$data["pagination"] = array("startpage"=>$startpage,"pages"=>$rec);
-
-				
-
-			}
-
-			else
-
-			{
+			}else{
 				$data["listing_list"] = array();
 				$data["pagination"] = array("startpage"=>0,"pages"=>0);
 				throw new Exception("No record found...");
-
 			}
-
 		}
-
-		catch(Exception $e)
-
-		{
-
+		catch(Exception $e){
 			$data['msg']= $e->getMessage();
-
 		}		return $data;
-
 	}
+	public function update_listing_slug($startpage,$limit)
+	{
+		try
+		{
+			$listingobj = array();
+			if($this->db->get("listing")->num_rows()>0)
+			{				
+				$rec = ceil($this->db->get("listing")->num_rows()/$limit);				
+				$lTo = $limit;				
+				if($startpage>$rec){$startpage = $rec;}
+				if($startpage>1){$lFrom = ($startpage-1)*$limit;}
+				else{$lFrom = 0;}				
+				$query = $this->db->select("listing_id,listing_category_path,listing_title_1,listing_location,listing_zip,listing_location_path")->from("listing")
+				->order_by('listing_id', 'desc')
+				->limit($lTo,$lFrom);
+				$result = $this->db->get()->result();
+				foreach($result as $listing){
+				    
+					$category_lists = explode("-",$listing->listing_category_path);
+					$slug = $listing->listing_id.' '.$listing->listing_title_1;
+
+					
+					if(isset($category_lists[0])){unset($category_lists[0]);}
+					if(isset($category_lists[7])){unset($category_lists[7]);}
+					if(isset($category_lists[8])){unset($category_lists[8]);}
+					if(isset($category_lists[9])){unset($category_lists[9]);}
+					if(isset($category_lists[10])){unset($category_lists[10]);}
+					$sector = 0;
+					$category = 0;
+					
+					$categoryobj = array();
+					foreach($category_lists as $k=>$listing_category_id){
+						if($k%2!=0){
+							$sector_list = $this->db->select("category_id,category_name_1")->from("setup_category_listing")->where(array('category_parent'=>0,'category_id'=>$listing_category_id))->get()->result();
+							if(count($sector_list)>0){
+								$sector = $sector_list[0];
+								$categoryobj[] = $sector;
+								$slug .= $sector->category_name_1;
+							}
+						}else{
+							$category_list = $this->db->select("category_id,category_name_1")->from("setup_category_listing")->where(array('category_id'=>$listing_category_id))->get()->result();
+							if(count($category_list)>0){
+								$category = $category_list[0];
+								$categoryobj[] = $category;
+								$slug .= ' '.$category->category_name_1;
+							}
+						}
+					}
+												
+												
+					$listing_locationobj = $this->db->select('location_id,location_name,location_path')->from('setup_location')->where(array('location_path'=>$listing->listing_location_path))->get()->result();
+					if(count($listing_locationobj)>0){
+						$listing_locationobj = $listing_locationobj[0];
+						
+						$slug .=' '.$listing_locationobj->location_name;
+						
+					}
+					
+					$slug = str_replace(".","",$slug);
+					$slug = str_replace(",","",$slug);	
+					$slug = str_replace(" ","-",$slug);	
+					$slug = strtolower($slug);
+					
+					$listingobj[] = array("listing_id"=>$listing->listing_id,"slug"=>$slug,'category_ids'=>$category_lists,"category"=>$categoryobj);
+					$this->db->where(array("listing_id"=>$listing->listing_id))->update("listing",array("listing_slug"=>$slug));
+				}
+			}
+			return $listingobj;
+		}
+		catch(Exception $e){
+			$data['msg']= $e->getMessage();
+		}		return $data;
+	}
+
 
 	public function listing_management($data,$startpage,$limit)
 
@@ -820,13 +863,8 @@ return "$city, $state, $country";
 
 	}
 
-	public function select_listing($data)
-
-	{
-
-		try
-
-		{
+	public function select_listing($data){
+		try{
 
 			if($this->db->get_where("listing",$data)->num_rows()>0)
 
@@ -917,13 +955,16 @@ return "$city, $state, $country";
 	public function add_new_listing($data,$catg)
 	{
 		try
-
 		{
-			
 			$this->db->insert("seller",array("seller_username"=>$this->input->post("listing_seller"),"seller_country"=>$this->input->post("listing_location_1"),"seller_status"=>"approved","seller_status_feature"=>"featured","seller_status_email"=>"approved","seller_status_approval"=>"on"));
 			$data['listing_seller'] =  $this->db->insert_id();
 			$this->db->insert("listing",$data);
 			$data["id"] = $this->db->insert_id();
+			if($data["id"]>0){
+			    $slug = $data["id"].'-'.$data['listing_slug'];
+			    $this->db->where('listing_id', $data["id"]);
+			    $this->db->update('listing',array('listing_slug'=>$slug));
+			}
 				$listing_category_array = $this->input->post("listing_category");
 				$temp_array = $listing_category_array;
 				foreach($listing_category_array as $k=>$val){
@@ -966,31 +1007,85 @@ return "$city, $state, $country";
 		$slogan = str_replace(" ","-",$title);
 		$this->db->insert("wp_posts",array("post_author"=>1,"post_data"=>date("Y-m-d H:s:i"),"post_content"=>"[]"));
 	}
-	public function feature($data){
-		try{
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
+	public function feature($data)
+
+	{
+
+		try
+
+		{
+
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
+
+			{
+
 				$this->db->where('listing_id', $data["listing_id"]);		
+
 				$this->db->update('listing', array("listing_status_feature"=>$data["listing_status_feature"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
+
 				throw new Exception("Listing feature list updated...");
-			}else{
+
+			}
+
+			else
+
+			{
+
 				throw new Exception("Listing feature record not found...");
+
 			}
-		}catch(Exception $e){
-			return $e->getMessage();
+
 		}
-	}	
-	public function status_new($data){
-		try{
-			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0){
+
+		catch(Exception $e)
+
+		{
+
+			return $e->getMessage();
+
+		}
+
+	}
+	
+	
+	public function status_new($data)
+
+	{
+
+		try
+
+		{
+
+			if($this->db->get_where("listing",array("listing_id"=>$data["listing_id"]))->num_rows()>0)
+
+			{
+
 				$this->db->where('listing_id', $data["listing_id"]);		
+
 				$this->db->update('listing', array("listing_status_new"=>$data["listing_status_new"],"listing_lastupdate"=>date("Y-m-d H:i:s")));
+
 				throw new Exception("Listing new list updated...");
-			}else{
-				throw new Exception("Listing new record not found...");
+
 			}
-		}catch(Exception $e){
-			return $e->getMessage();
+
+			else
+
+			{
+
+				throw new Exception("Listing new record not found...");
+
+			}
+
 		}
+
+		catch(Exception $e)
+
+		{
+
+			return $e->getMessage();
+
+		}
+
 	}
 
 	public function auto_approve($data)
