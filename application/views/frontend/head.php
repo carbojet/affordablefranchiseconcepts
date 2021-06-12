@@ -42,4 +42,7 @@
 
 	<link rel="shortcut icon" href="<?php echo base_url("theme");?>img/icon.png" />
 
+	<!-- Google Recaptcha -->
+	<script src="https://www.google.com/recaptcha/api.js"></script>
+	
 <!-- END HEAD -->

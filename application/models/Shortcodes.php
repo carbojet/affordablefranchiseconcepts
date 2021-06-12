@@ -1278,8 +1278,7 @@ class Shortcodes extends CI_Model {
 			
 			<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<label class="control-label">Security Check</label><br/><span>please enter the text below</span>
-				<div class="form-group">'.$this->custom_captcha().'</div>
+				'.$this->google_capcha()/* $this->custom_captcha() */.'
 			</div>
 			</div>';
 			if(isset($_GET['listing_id'])){
@@ -1901,8 +1900,7 @@ class Shortcodes extends CI_Model {
 					</div>
 					<div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<label class="control-label">Security Check</label><br/><span>please enter the text below</span>
-						<div class="form-group">'.$this->custom_captcha().'</div>
+						'.$this->google_capcha()/* $this->custom_captcha() */.'
 					</div>
 					</div>
 					<div class="row">
@@ -2063,8 +2061,7 @@ class Shortcodes extends CI_Model {
 				</div>
 				<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<label class="control-label">Security Check</label><br/><span>please enter the text below </span> 
-				<div class="form-group">'.$this->custom_captcha().'</div>  
+					'.$this->google_capcha()/* $this->custom_captcha() */.'  
 				</div>
 				</div>
 				<div class="row">
@@ -2082,10 +2079,19 @@ class Shortcodes extends CI_Model {
 
 	public function custom_captcha(){
 		$chars = "abcdefghjkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
-		$captchacode = substr( str_shuffle( $chars ), 0, 5 );  
-		return  '<label class="control-label" style="-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;padding:3px 10px;background-color:#000000;color:#f4c730;font-size:25px;">'.$captchacode.' </label><input type="text" name="captcha" size="4" maxlength="5" style="font-size:25px;" tabindex="0" required /><input type="hidden"  name="captcha_validate" value="'.$captchacode.'" />';
+		$captchacode = substr( str_shuffle( $chars ), 0, 5 );
+		return  '<label class="control-label">Security Check</label><br/><span>please enter the text below</span>
+				<div class="form-group">
+					<label class="control-label" style="-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;padding:3px 10px;background-color:#000000;color:#f4c730;font-size:25px;">'.$captchacode.' </label><input type="text" name="captcha" size="4" maxlength="5" style="font-size:25px;" tabindex="0" required /><input type="hidden"  name="captcha_validate" value="'.$captchacode.'" />
+				</div>';
 	}
-	
+	public function google_capcha(){
+		$sitekey = '6LeMaCQbAAAAALPJ9E75dCvmU9R0Vctw6bPdpi82';
+		return '<label class="control-label">Security Check</label><br/><span>please enter the text below</span>
+				<div class="form-group">
+					<div class="g-recaptcha" data-sitekey="'.$sitekey.'"></div>
+				</div>';
+	}
 	public function listing($args = array()){
 		$html = '';
 		$where = '';

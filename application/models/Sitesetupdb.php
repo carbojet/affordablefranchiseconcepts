@@ -122,8 +122,7 @@ class Sitesetupdb extends CI_Model {
 	}
 	public function import_export($result=array(),$type,$import_section="listing")
 	{
-		if($type=="import")
-		{			
+		if($type=="import"){			
 			$record_not_insert = "";			
 			$ads = 0;
 			$update = 0;
@@ -180,9 +179,6 @@ class Sitesetupdb extends CI_Model {
 								}else{$mismatch_category .= $row[3];}
 							}else{$mismatch_category .= $row[2];}
 							
-							
-							
-												
 							//check location
 							$location = false;
 							$result = $this->db->get_where("setup_location",array("location_parent"=>0,"location_name"=>$row[8]))->result();
@@ -226,26 +222,36 @@ class Sitesetupdb extends CI_Model {
 								$listing_category_path = "-".implode("-",$category_list)."-";
 								$listing_url_1 = str_replace(" ","-",$row[1]);
 								$listing_location_path = "-".implode("-",$location_list)."-";
-								
+								//listing slug
+								$listing_slug = $row[1].' '.$row[2].' '.$row[3].' '.$row[4].' '.$row[5].' '.$row[6].' '.$row[7].' '.$row[10];
+								$listing_slug = str_replace(" ","-",$slug);
+								$listing_meta_keyword = $row[26];
+								$listing_meta_desc = $row[27];
 								$listing_status_keywords = $row[1]." + ".str_replace(" ","-",$row[1])." + ".$row[14]." + ".$row[2]." + ".$row[3]." + ".$row[4]." + ".$row[5]." + ".$row[6]." + ".$row[7]." + ".$row[8]." + ".$row[9]." + ".$row[10]." + ".$row[11]." + ".$row[17]."+".$row[18]."+".$row[19]."+".$row[20]."+".$row[21];
 								
 								if($seller_id>0)
 								{
 									$listingresult = $this->db->get_where("listing",array("listing_seller"=>$seller_id))->result();
+									$slug = $row[1].' ';
+									$data = array("listing_seller"=>$seller_id,"listing_category"=>$category_list[0],"listing_slug"=>$listing_slug,"listing_keywords"=>$listing_meta_keyword,"listing_meta_description"=>$lising_meta_desc,"listing_category_path"=>$listing_category_path,"listing_url_1"=>$listing_url_1,"listing_title_1"=>$row[1],"listing_zip"=>$listing_zip,"listing_price"=>$row[13],"listing_location_path"=>$listing_location_path,"listing_location"=>$location_list[0],"listing_facilities"=>$row[17],"listing_competition"=>$row[18],"listing_growth"=>$row[19],"listing_financing"=>$row[20],"listing_training"=>$row[21],"listing_descbrief_1"=>$row[14],"listing_descfull_1"=>$row[14],"listing_sell_reason"=>$row[22],"listing_image"=>$row[23],"listing_status_feature"=>"unfeatured","listing_status_new"=>"new","listing_status_claimed"=>"claimed","listing_status_keywords"=>$listing_status_keywords,"listing_status"=>"approved","listing_lastupdate"=>date("Y-m-d H:i:s"));
 									
-									$data = array("listing_seller"=>$seller_id,"listing_category"=>$category_list[0],"listing_category_path"=>$listing_category_path,"listing_url_1"=>$listing_url_1,"listing_title_1"=>$row[1],"listing_zip"=>$listing_zip,"listing_price"=>$row[13],"listing_location_path"=>$listing_location_path,"listing_location"=>$location_list[0],"listing_facilities"=>$row[17],"listing_competition"=>$row[18],"listing_growth"=>$row[19],"listing_financing"=>$row[20],"listing_training"=>$row[21],"listing_descbrief_1"=>$row[14],"listing_descfull_1"=>$row[14],"listing_sell_reason"=>$row[22],"listing_image"=>$row[23],"listing_status_feature"=>"unfeatured","listing_status_new"=>"new","listing_status_claimed"=>"claimed","listing_status_keywords"=>$listing_status_keywords,"listing_status"=>"approved","listing_lastupdate"=>date("Y-m-d H:i:s"));
-									if(count($listingresult)<=0)
-									{
+
+									if(count($listingresult)<=0){
 									
 										$ads++;
 										$this->db->insert("listing",$data);
 										$data["id"] = $this->db->insert_id();
 										if($data["id"]>0)
 										{
+											$listing_slug = $data["id"]."-".$listing_slug;
+											$this->db->where(array("listing_id"=>$data["id"]));
+											$this->db->update("listing",array("listing_slug"=>$listing_slug));
+
 											$temp_array = $category_list;
 											foreach($temp_array as $k=>$val)
 											{
 												$this->db->insert("listing_category",array("category_listing"=>$data["id"],"category_value"=>$val,"category_path"=>"-".$val."-","category_status"=>"approved"));
+
 											}
 										}
 									}
@@ -526,8 +532,7 @@ class Sitesetupdb extends CI_Model {
 				
 			return $record_not_insert;
 		}
-		if($type=="export")
-		{
+		if($type=="export"){
 			$rows=array();
 			if($import_section=="listing")
 			{			
@@ -544,8 +549,6 @@ class Sitesetupdb extends CI_Model {
 						$row[0] = $sellerObj->seller_username;
 						$row[1] = $listingObj->listing_title_1;
 						
-						
-						
 						//getting sector and category list
 						$cat_key = 3;
 						$sec_key = 2;
@@ -560,13 +563,10 @@ class Sitesetupdb extends CI_Model {
 							$sector_result = $this->db->get_where("setup_category_listing",array("category_id"=>$id))->result();
 							foreach($sector_result as $sectorObj)
 							{
-								if($k%2!=0)
-								{
+								if($k%2!=0){
 									$row[$sec_key] = $sectorObj->category_name_1;
 									$sec_key +=2;
-								}
-								else
-								{
+								}else{
 									//$row[$cat_key] = $categoryObj->category_name_1;
 									$row[$cat_key] = $sectorObj->category_name_1;
 									$cat_key +=2;

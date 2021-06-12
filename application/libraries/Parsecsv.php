@@ -433,14 +433,26 @@ class Parsecsv {
      * @return [bool]
      */
     public function save($file = null, $data = array(), $append = false, $fields = array()) {
-        if (empty($file)) {
-            $file = &$this->file;
+        try{
+            if (empty($file)) {
+                $file = &$this->file;
+            }
+
+            $mode = ($append) ? 'at' : 'wt';
+            $is_php = (preg_match('/\.php$/i', $file)) ? true : false;
+
+            return $this->_wfile($file, $this->unparse($data, $fields, $append, $is_php), $mode);    
+        }catch(Exception $error){
+            throw new Exception($error)
         }
+        // if (empty($file)) {
+        //     $file = &$this->file;
+        // }
 
-        $mode = ($append) ? 'at' : 'wt';
-        $is_php = (preg_match('/\.php$/i', $file)) ? true : false;
+        // $mode = ($append) ? 'at' : 'wt';
+        // $is_php = (preg_match('/\.php$/i', $file)) ? true : false;
 
-        return $this->_wfile($file, $this->unparse($data, $fields, $append, $is_php), $mode);
+        // return $this->_wfile($file, $this->unparse($data, $fields, $append, $is_php), $mode);
     }
 
     /**

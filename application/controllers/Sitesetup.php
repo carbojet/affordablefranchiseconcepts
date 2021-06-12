@@ -233,8 +233,8 @@ class Sitesetup extends CI_Controller {
 		//$upload_type = $this->input->post("upload_type");
 		
 		$import_section = $this->input->post("import_section");
-		if($this->input->post("import"))
-		{			
+		
+		if($this->input->post("import")){			
 			if($import_section=="listing"){$file_name = "listing";}
 			if($import_section=="sectors"){$file_name = "sectors";}
 			if($import_section=="location"){$file_name = "locations";}
@@ -242,8 +242,7 @@ class Sitesetup extends CI_Controller {
 			
 			//ini_set('memory_limit', '128M');
 			
-			if(!empty($_FILES["photo_file_1"]["name"]))
-			{
+			if(!empty($_FILES["photo_file_1"]["name"])){
 				$upload_result = $this->upload_csvfile($file_name,"photo_file_1");
 				
 				

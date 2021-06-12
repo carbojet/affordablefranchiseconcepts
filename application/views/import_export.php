@@ -650,7 +650,7 @@ input[type=checkbox] {
 
 						for(var key in data){
 
-						$("#listing_category_"+level).find("select").append('<option value="'+key+'">'+data[key]+'</option>')
+							$("#listing_category_"+level).find("select").append('<option value="'+key+'">'+data[key]+'</option>')
 
 						}						
 
