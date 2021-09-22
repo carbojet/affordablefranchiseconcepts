@@ -5,7 +5,6 @@
     <body class="">
         <div class="site">
             <?php
-            //var_dump($slug);
                 $this->load->view("frontend/header");
             ?>
             <?php if($slug=='home'){?>

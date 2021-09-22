@@ -15,6 +15,25 @@
 				<?php //$menu = $this->Chome->get_menu(3);?>
 				<div class="navbar-collapse collapse">
 					<ul id="menu-navigation" class="nav navbar-nav">
+						<?php foreach($menu['menus'] as $menuitem){?>
+							<li id="menu-item-8" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-8 active">
+								<?php if(isset($menuitem['submenu'])){?>									
+									<a title="<?php echo $menuitem['menu_title'];?>" href="#" data-target="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo $menuitem['menu_title'];?><span class="caret"></span></a>
+									<ul role="menu" class=" dropdown-menu">
+										<?php foreach($menuitem['submenu'] as $submenuitem){?>
+											<li id="menu-item-38" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-38">
+												<a title="<?php echo $submenuitem['menu_title'];?>" href="<?php echo base_url().$submenuitem['menu_name'];?>"><?php echo $submenuitem['menu_title'];?></a>
+											</li>
+										<?php }?>
+									</ul>
+								<?php }else{?>
+									<a title="<?php echo $menuitem['menu_title'];?>" href="<?php echo base_url().$menuitem['menu_name'];?>">
+										<?php echo $menuitem['menu_title'];?>
+									</a>
+								<?php }?>
+							</li>	
+						<?php } ?>
+						<!--
 						<li id="menu-item-8" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-5 current_page_item menu-item-8 active"><a title="Home" href="https://www.affordablebusinessconcepts.com/">Home</a></li>
 						<li id="menu-item-223" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-223"><a title="Business Directory" href="https://www.affordablebusinessconcepts.com/business-directory/">Business Directory</a></li>
 						<li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-36 dropdown"><a title="ABC Advice" href="#" data-target="#" data-toggle="dropdown" class="dropdown-toggle">ABC Advice <span class="caret"></span></a>
@@ -47,8 +66,9 @@
 						</li>
 						<li id="menu-item-193" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-193"><a title="Testimonials" href="https://www.affordablebusinessconcepts.com/testimonials/">Testimonials</a></li>
 						<li id="menu-item-232" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-232"><a title="Search" href="https://www.affordablebusinessconcepts.com/search/">Search</a></li>
-						</ul>
-					</div>
+								-->
+					</ul>
+				</div>
 					<!-- .navbar -->
 
 				</div>
@@ -76,7 +96,7 @@
 		echo $this->Chome->forms(array('form'=>"multiad"));
 	?>
 	
-
+	<!-- desktop menu -->
 	<div class="nav-menu">
 		<div class="container">
 			<nav id="site-navigation" class="main-navigation" role="navigation">
